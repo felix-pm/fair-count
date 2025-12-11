@@ -1,5 +1,5 @@
 {
-  "name": "Fair-Count/Fair-Count",
+  "name": "groupe/faircount",
   "require": {
     "vlucas/phpdotenv": "^5.6",
     "symfony/var-dumper": "^7.0",
