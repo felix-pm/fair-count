@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit489c7a5ce1c2d0a415645b418bd15b74
+class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -83,30 +83,29 @@ class ComposerStaticInit489c7a5ce1c2d0a415645b418bd15b74
         'AbstractController' => __DIR__ . '/../..' . '/controllers/AbstractController.php',
         'AbstractManager' => __DIR__ . '/../..' . '/managers/AbstractManager.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
+        'AuthController' => __DIR__ . '/../..' . '/controllers/AuthController.php',
+        'Category' => __DIR__ . '/../..' . '/models/Category.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'ErrorController' => __DIR__ . '/../..' . '/controllers/ErrorController.php',
+        'Expense' => __DIR__ . '/../..' . '/models/Expense.php',
+        'Expense_participant' => __DIR__ . '/../..' . '/models/Expense_participant.php',
+        'Group' => __DIR__ . '/../..' . '/models/Group.php',
+        'Group_user' => __DIR__ . '/../..' . '/models/Group_user.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
-        'Product' => __DIR__ . '/../..' . '/models/Product.php',
-        'ProductCategory' => __DIR__ . '/../..' . '/models/ProductCategory.php',
-        'ProductCategoryController' => __DIR__ . '/../..' . '/controllers/ProductCategoryController.php',
-        'ProductCategoryManager' => __DIR__ . '/../..' . '/managers/ProductCategoryManager.php',
-        'ProductController' => __DIR__ . '/../..' . '/controllers/ProductController.php',
-        'ProductManager' => __DIR__ . '/../..' . '/managers/ProductManager.php',
-        'Review' => __DIR__ . '/../..' . '/models/Review.php',
-        'ReviewController' => __DIR__ . '/../..' . '/controllers/ReviewController.php',
-        'ReviewManager' => __DIR__ . '/../..' . '/managers/ReviewManager.php',
+        'Reimnursement' => __DIR__ . '/../..' . '/models/Reimbursement.php',
         'Router' => __DIR__ . '/../..' . '/services/Router.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'User' => __DIR__ . '/../..' . '/models/User.php',
+        'UserController' => __DIR__ . '/../..' . '/controllers/UserController.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit489c7a5ce1c2d0a415645b418bd15b74::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit489c7a5ce1c2d0a415645b418bd15b74::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit489c7a5ce1c2d0a415645b418bd15b74::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit1563689cb0cfd32488cf45b6250d9732::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit1563689cb0cfd32488cf45b6250d9732::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit1563689cb0cfd32488cf45b6250d9732::$classMap;
 
         }, null, ClassLoader::class);
     }

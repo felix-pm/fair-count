@@ -3,7 +3,7 @@
         'name' => 'groupe/faircount',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '696ead10018f0f01a04f1e7fad57ad0a15ce7645',
+        'reference' => 'c005815ff75a293928401f6b2a791980f4ecca3a',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'groupe/faircount' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '696ead10018f0f01a04f1e7fad57ad0a15ce7645',
+            'reference' => 'c005815ff75a293928401f6b2a791980f4ecca3a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
