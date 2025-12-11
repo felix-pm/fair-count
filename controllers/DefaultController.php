@@ -4,77 +4,43 @@ class DefaultController extends AbstractController
 {
     public function home() : void
     {
-        $ctrl1 = new PlayerManager;
-        $ctrl2 = new Player_performanceManager;
-        $ctrl3= new GameManager;
-        $data1 = $ctrl1->findAll();
-        $data2 = $ctrl2->findAll();
-        $data3 = $ctrl3->findAll();
-        $data=[
-            "players" => $data1,
-            "performance" =>$data2,
-            "game" =>$data3
-        ];
-        $this->render("home_page", $data);
+
+        $this->render("home/home.html.twig", []); //changer la route vers la page home
     }
 
-    public function list_matchs() : void
+    public function login() : void //page de connection
     {
-        $ctrl = new GameManager;
-        $data = $ctrl->findAll();
-        $this->render("list_matchs", $data);
+        $this->render("auth/login.html.twig", []);
+        
     }
 
-    public function list_players() : void
+    public function register() : void //page de création de compte
     {
-        $ctrl = new PlayerManager;
-        $data = $ctrl->findPlayer();
-        $this->render("list_players", $data);
+        $this->render("auth/register.html.twig", []);
     }
 
-    public function list_teams() : void
+    public function profile() : void //page de profil de l'utilisateur
     {
-        $ctrl = new TeamManager;
-        $data = $ctrl->findAll();
-        $this->render("list_teams", $data);
+        $this->render("member/profile.html.twig", []);
     }
 
-    public function matchs() : void
+    public function expenses() : void //page des dépenses
     {
-        $ctrl1 = new Player_performanceManager;
-        $ctrl2= new GameManager;
-        $data1 = $ctrl1->findAll();
-        $data2 = $ctrl2->findAll();
-        $data=[
-            "performance" =>$data1,
-            "game" =>$data2
-        ];
-        $this->render("match", $data);
+        $this->render("user/expenses.html.twig", []);
     }
 
-    public function players() : void
+    public function create_group() : void //création de groupe
     {
-        $ctrl_1 = new PlayerManager;
-        $ctrl_2 = new TeamManager;
-        $ctrl_3 = new GameManager;
-        $ctrl_4 = new Player_performanceManager;
-        $data_1 = $ctrl_1->findAll();
-        $data_2 = $ctrl_2->findAll();
-        $data_3 = $ctrl_3->findAll();
-        $data_4 = $ctrl_4->findAll();
-        $data = [
-            "players" => $data_1,
-            "teams" => $data_2,
-            "games" => $data_3,
-            "stats" => $data_4
-        ];
-        $this->render("players", $data);
+        $this->render("user/profile.html.twig", []);
     }
 
-    public function teams() : void
+    public function update_group() : void //update d'un groupe par un utilisateur
     {
-        $ctrl = new PlayerManager;
-        $data = $ctrl->findAll();
-        $this->render("teams", $data);
+        $this->render("user/update_group.html.twig", []);
+    }
+
+    public function balances() : void //page initiale lorsque l'on clique sur un groupe
+    {
+        $this->render("user/balances.html.twig", []);
     }
 }
