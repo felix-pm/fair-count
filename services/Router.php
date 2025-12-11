@@ -2,49 +2,61 @@
 
 class Router
 {
-    public function handleRequest(array $get) : void
+    private AuthController $ac;
+    private UserController $uc;
+    public function __construct()
     {
-        if(isset($get["route"]))
-        {
-            if($get["route"] === "list_matchs")
-            {
-                $ctrl = new DefaultController();
-                $ctrl->list_matchs();
+        $this->ac = new AuthController();
+        $this->uc = new UserController();
+    }
+
+    public function handleRequest() : void
+    {
+        if(!empty($_GET['route'])) {
+            if($_GET['route'] === 'login') {
+                $this->ac->login();
             }
-            else if($get["route"] === "list_players")
-            {
-                $ctrl = new DefaultController();
-                $ctrl->list_players();
+            else if($_GET['route'] === 'register') {
+                $this->ac->register();
             }
-            else if($get["route"] === "list_teams")
-            {
-                $ctrl = new DefaultController();
-                $ctrl->list_teams();
+            else if($_GET['route'] === 'logout') {
+                $this->ac->logout();
             }
-            else if($get["route"] === "match")
-            {
-                $ctrl = new DefaultController();
-                $ctrl->matchs();
+            else if($_GET['route'] === 'profile') {
+                $this->uc->profile();
             }
-            else if($get["route"] === "players")
-            {
-                $ctrl = new DefaultController();
-                $ctrl->players();
+            else if($_GET['route'] === 'create_group') {
+                $this->uc->create_group();
             }
-            else if($get["route"] === "teams")
+            else if($_GET['route'] === 'create_user') {
+                $this->uc->create_user();
+            }
+            else if($_GET['route'] === 'update_user') {
+                $this->uc->update_user();
+            }
+            else if($_GET['route'] === 'update_group') {
+                $this->uc->update_group();
+            }
+            else if($_GET['route'] === 'delete_user') {
+                $this->uc->delete_user();
+            }
+            else if($_GET['route'] === 'delete_group') {
+                $this->uc->delete_group();
+            }
+            else if($_GET['route'] === 'list_admin') {
+                $this->uc->list_admin();
+            }
+            else if($_GET['route'] === 'show_user') {
+                $this->uc->show_user();
+            }
+            else
             {
-                $ctrl = new DefaultController();
-                $ctrl->teams();
+                $this->ac->notFound();
             }
         }
         else
         {
-            $ctrl = new DefaultController();
-            $ctrl->home();
-
+            $this->ac->login();
         }
     }
-
 }
-
-?>
