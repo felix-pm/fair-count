@@ -6,21 +6,16 @@ abstract class AbstractManager
 
     public function __construct()
     {
-        $host = "localhost";
-        $port = "3306";
-        $dbname = "coda_bph_the_league";
-        $connexionString = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8";
+        $dbHost = $_ENV['DB_HOST'];
+        $dbUser = $_ENV['DB_USER'];
+        $dbPass = $_ENV['DB_PASS'];
+        $dbName = $_ENV['DB_NAME'];
 
-        $user = "root";
-        $password = "root";
-
+        $connexion = "mysql:host=".$dbHost.";port=3306;charset=utf8;dbname=".$dbName;
         $this->db = new PDO(
-            $connexionString,   
-            $user,
-            $password
+            $connexion,
+            $dbUser,
+            $dbPass
         );
     }
 }
-
-
-?>
