@@ -13,8 +13,8 @@ class Router
     public function handleRequest() : void
     {
         if(!empty($_GET['route'])) {
-            if($_GET['route'] === 'login') {
-                $this->ac->login();
+            if($_GET['route'] === 'home') {
+                $this->ac->home();
             }
             else if($_GET['route'] === 'register') {
                 $this->ac->register();
