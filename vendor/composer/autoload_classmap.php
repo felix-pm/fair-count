@@ -23,5 +23,6 @@ return array(
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'User' => $baseDir . '/models/User.php',
     'UserController' => $baseDir . '/controllers/UserController.php',
+    'UserManager' => $baseDir . '/managers/UserManager.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
 );

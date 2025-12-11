@@ -97,6 +97,7 @@ class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'User' => __DIR__ . '/../..' . '/models/User.php',
         'UserController' => __DIR__ . '/../..' . '/controllers/UserController.php',
+        'UserManager' => __DIR__ . '/../..' . '/managers/UserManager.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 

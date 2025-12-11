@@ -3,7 +3,7 @@
 class Expense
 {
 
-    public function __construct(private int $id, private string $title, private int $amount, private Datetime $date, private int $user_id, private int $category_id, private int $group_id, private int $created_at)
+    public function __construct(private int $id, private string $title, private int $amount, private Datetime $date, User $user_id, private int $category_id, private Group $group_id, private int $created_at)
     {
 
     }  
@@ -56,12 +56,12 @@ class Expense
         return $this;
     }
 
-    public function getUser_id()
+    public function getUser_id(): User
     {
         return $this->user_id;
     }
 
-    public function setUser_id($user_id)
+    public function setUser_id($user_id):User
     {
         $this->user_id = $user_id;
 
@@ -80,12 +80,12 @@ class Expense
         return $this;
     }
 
-    public function getGroup_id()
+    public function getGroup_id(): Group
     {
         return $this->group_id;
     }
 
-    public function setGroup_id($group_id)
+    public function setGroup_id($group_id): Group
     {
         $this->group_id = $group_id;
 
