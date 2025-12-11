@@ -47,7 +47,7 @@ class AuthController extends AbstractController
     public function logout() : void
     {
         session_destroy();
-        $this->redirect('index.php');
+        $this->redirect('login.php');
     }
 
     public function register(): void
