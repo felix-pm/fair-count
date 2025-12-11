@@ -1,14 +1,27 @@
 <?php
 
-abstract class AbstractController
+class AbstractController
 {
-    protected function render(string $template, array $data) : void
+    private \Twig\Environment $twig;
+    public function __construct()
     {
-        require "templates/layout.phtml";
+        $loader = new \Twig\Loader\FilesystemLoader('templates');
+        $twig = new \Twig\Environment($loader,[
+            'debug' => true,
+        ]);
+        $twig->addGlobal('session', $_SESSION);
+        $twig->addExtension(new \Twig\Extension\DebugExtension());
+        $this->twig = $twig;
     }
 
-    protected function redirect(string $route) : void
+    protected function render(string $template, array $data) : void
     {
-        header("Location: $route");
+        echo $this->twig->render($template, $data);
+    }
+
+    protected function redirect(string $url) : void
+    {
+        header('Location: '.$url);
+        exit;
     }
 }
