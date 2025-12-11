@@ -85,6 +85,7 @@ class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'AuthController' => __DIR__ . '/../..' . '/controllers/AuthController.php',
         'Category' => __DIR__ . '/../..' . '/models/Category.php',
+        'CategoryManager' => __DIR__ . '/../..' . '/managers/CategoryManager.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Expense' => __DIR__ . '/../..' . '/models/Expense.php',
         'Expense_participant' => __DIR__ . '/../..' . '/models/Expense_participant.php',
@@ -97,6 +98,7 @@ class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'User' => __DIR__ . '/../..' . '/models/User.php',
         'UserController' => __DIR__ . '/../..' . '/controllers/UserController.php',
+        'UserManager' => __DIR__ . '/../..' . '/managers/UserManager.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 

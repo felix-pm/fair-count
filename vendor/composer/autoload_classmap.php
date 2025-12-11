@@ -11,6 +11,7 @@ return array(
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'AuthController' => $baseDir . '/controllers/AuthController.php',
     'Category' => $baseDir . '/models/Category.php',
+    'CategoryManager' => $baseDir . '/managers/CategoryManager.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Expense' => $baseDir . '/models/Expense.php',
     'Expense_participant' => $baseDir . '/models/Expense_participant.php',
@@ -23,5 +24,6 @@ return array(
     'UnhandledMatchError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
     'User' => $baseDir . '/models/User.php',
     'UserController' => $baseDir . '/controllers/UserController.php',
+    'UserManager' => $baseDir . '/managers/UserManager.php',
     'ValueError' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
 );
