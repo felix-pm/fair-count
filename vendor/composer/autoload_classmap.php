@@ -16,6 +16,7 @@ return array(
     'Expense' => $baseDir . '/models/Expense.php',
     'Expense_participant' => $baseDir . '/models/Expense_participant.php',
     'Group' => $baseDir . '/models/Group.php',
+    'GroupManager' => $baseDir . '/managers/GroupManager.php',
     'Group_user' => $baseDir . '/models/Group_user.php',
     'PhpToken' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
     'Reimnursement' => $baseDir . '/models/Reimbursement.php',

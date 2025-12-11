@@ -90,6 +90,7 @@ class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
         'Expense' => __DIR__ . '/../..' . '/models/Expense.php',
         'Expense_participant' => __DIR__ . '/../..' . '/models/Expense_participant.php',
         'Group' => __DIR__ . '/../..' . '/models/Group.php',
+        'GroupManager' => __DIR__ . '/../..' . '/managers/GroupManager.php',
         'Group_user' => __DIR__ . '/../..' . '/models/Group_user.php',
         'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
         'Reimnursement' => __DIR__ . '/../..' . '/models/Reimbursement.php',
