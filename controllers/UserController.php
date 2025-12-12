@@ -121,10 +121,9 @@ class UserController extends AbstractController
 
     }
 
-    //FONCTION POUR PAR DEFAUT
     public function profile() :void
     {
-        if(isset($_SESSION["firstName"]) && isset($_SESSION["lastName"]) && isset($_SESSION["email"]) && isset($_SESSION["role"]) && isset($_SESSION["id"]))
+        if(isset($_SESSION["firstname"]) && isset($_SESSION["lastname"]) && isset($_SESSION["email"]) && isset($_SESSION["role"]) && isset($_SESSION["id"]))
         {
             if($_SESSION["role"] === "ADMIN")
             {
@@ -141,7 +140,6 @@ class UserController extends AbstractController
         }
     }
 
-                                                            //modifié pour que ça marche 
     public function create_group() :void {
         if (!isset($_SESSION['role']) || $_SESSION['role'] === 'ADMIN')
         {
@@ -152,19 +150,12 @@ class UserController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            if( (empty($_POST["name"])) || (empty($_POST["participant"]) )) //vérification si un titre est une liste de participants a été saisi
-            {  
+            if( (empty($_POST["name"])) || (empty($_POST["participant"]) )) {  
                 $errors[] = "veuillez remplir tout les champs !";
             }
-
-            //condition de lancement de l'erreur pour le if ci-dessous
             $ctrl = new GroupManager;
-            $verif_group = $ctrl->findByName($_POST["name"]); //faire une fonction findByName dans GroupManager
-
-            //findAll qui permet d'aller récupérer le password dans le else ci-dessous
+            $verif_group = $ctrl->findByName($_POST["name"]); 
             $datas = $ctrl->findAll();
-
-            //si le groupe existe  une erreur est lancé
             if($verif_group != null)
             {
                 $errors[] = "Le groupe existe déjà";
