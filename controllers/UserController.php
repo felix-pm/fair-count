@@ -247,14 +247,6 @@ class UserController extends AbstractController
         $this->render("member/affichage_expenses.html.twig", []);
     }
 
-    public function reimbursement() : void 
-    {
-        $ctrl = new ReimbursementManager;
-        $datas = $ctrl->findAll();
-        $this->render("member/reimbursement.html.twig", []);
-    }
-
-
     public function home()
     {
         if (!isset($_SESSION['id'])) {
@@ -264,5 +256,40 @@ class UserController extends AbstractController
         $manager = new Group_userManager();
         $myGroups = $manager->findGroupsByUserId($userId);
         return $this->render('home/home.html.twig', ["groups" => $myGroups]);
+    }
+    
+    public function reimbursement() : void 
+    {
+        // 1. Vérification de sécurité : a-t-on un ID de groupe ?
+        if (!isset($_GET['id'])) {
+            $this->redirect('index.php?route=home');
+        }
+
+        $groupId = (int) $_GET['id'];
+
+        // 2. Initialisation du Manager
+        // Note : Votre ReimbursementManager demande PDO dans son constructeur
+        // Si votre AbstractController a une propriété $this->db, on l'utilise.
+        // Sinon, il faudra récupérer l'instance de la BDD comme vous le faites ailleurs.
+        // Je suppose ici que AbstractController ou AbstractManager gère la connexion.
+        
+        // ATTENTION : Dans votre code fourni, ReimbursementManager attend (PDO $pdo).
+        // Si vous utilisez un singleton pour la DB, adaptez la ligne ci-dessous :
+        // $db = Database::getInstance(); ou $this->db si accessible
+        
+        // Pour cet exemple, je pars du principe que AbstractController permet d'accéder à la DB
+        // Il faudra peut-être adapter cette ligne selon votre connexion :
+        $rm = new ReimbursementManager(); 
+        // Si vous n'avez pas accès à la variable $db ici, instanciez-la.
+        // Exemple classique : $rm = new ReimbursementManager($this->db);
+        
+        // 3. Appel de l'algorithme "Qui doit combien"
+        $reimbursementPlan = $rm->getReimbursementPlan($groupId);
+
+        // 4. Envoi des données à la vue
+        $this->render("member/reimbursement.html.twig", [
+            "plan" => $reimbursementPlan,
+            "group_id" => $groupId
+        ]);
     }
 }

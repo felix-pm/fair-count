@@ -4,8 +4,52 @@
     {% include "partials/_header.html.twig" %}
 {% endblock %}
 
+{% extends "layout.html.twig" %}
+
+{% block title %}Remboursements{% endblock %}
+
 {% block main %}
-    {% for group in groups %}
-        <a href="?route=expenses&id={{group.id}}"> {{group.name}} </a>
-    {% endfor %}
+<div class="container-reimbursement">
+    <h2>⚖️ Équilibre des comptes</h2>
+    
+    <div class="actions">
+        {# Lien de retour vers les dépenses du groupe #}
+        <a href="index.php?route=expenses&id={{ group_id }}" class="btn-secondary">
+            &larr; Retour aux dépenses
+        </a>
+    </div>
+
+    <hr>
+
+    <div class="reimbursement-list">
+        {% if plan is empty %}
+            <div class="alert-success">
+                <h3>🎉 Tout est équilibré !</h3>
+                <p>Personne ne doit rien à personne dans ce groupe.</p>
+            </div>
+        {% else %}
+            <p>Voici les virements optimisés pour rembourser tout le monde :</p>
+            
+            <ul class="transaction-list">
+                {% for transaction in plan %}
+                    <li class="transaction-card">
+                        <div class="debtor">
+                            <strong>{{ transaction.from }}</strong>
+                        </div>
+                        
+                        <div class="amount-arrow">
+                            <span class="amount">{{ transaction.amount }} €</span>
+                            <span class="arrow">&rarr;</span>
+                            <small>doit payer à</small>
+                        </div>
+
+                        <div class="creditor">
+                            <strong>{{ transaction.to }}</strong>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
