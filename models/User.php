@@ -3,7 +3,7 @@
 class User
 {
 
-    public function __construct(private int $id, private string $username, private string $email, private string $password, private Datetime $create_at)
+    public function __construct(private int $id, private string $email, private string $password, private Datetime $create_at, private string $firstname, private string $lastname)
     {
 
     }  
@@ -20,17 +20,6 @@ class User
         return $this;
     }
     
-    public function getUsername()
-    {
-        return $this->username;
-    }
-    
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
 
     public function getEmail()
     {
@@ -64,6 +53,30 @@ class User
     public function setCreate_at($create_at)
     {
         $this->create_at = $create_at;
+
+        return $this;
+    }
+
+    public function getfirstname()
+    {
+        return $this->username;
+    }
+    
+    public function setfirstname($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getlastname()
+    {
+        return $this->username;
+    }
+    
+    public function setlastname($username)
+    {
+        $this->username = $username;
 
         return $this;
     }

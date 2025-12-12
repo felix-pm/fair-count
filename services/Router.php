@@ -16,8 +16,8 @@ class Router
             if($_GET['route'] === 'home') {
                 $this->ac->home();
             }
-            else if($_GET['route'] === 'register') {
-                $this->ac->register();
+            else if($_GET['route'] === 'login') {
+                $this->ac->login();
             }
             else if($_GET['route'] === 'logout') {
                 $this->ac->logout();
@@ -56,7 +56,7 @@ class Router
         }
         else
         {
-            $this->ac->login();
+            $this->ac->register();
         }
     }
 }
