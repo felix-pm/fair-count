@@ -1,5 +1,5 @@
-## Aides extérieurs :
-# script 1 : aides nous à comprendre le fonctionnement du manager reimbursementManager.php dans mon projet faircount
+# Aides extérieurs :
+## script 1 : aides nous à comprendre le fonctionnement du manager reimbursementManager.php dans mon projet faircount
 C'est un excellent exercice de logique "Tricount" (ou Fair Count). Pour réaliser cela correctement avec ta structure de base de données, il faut procéder en deux étapes principales :
 
 Calculer la "Balance" de chaque utilisateur : (Ce qu'il a payé moins ce qu'il a consommé).
