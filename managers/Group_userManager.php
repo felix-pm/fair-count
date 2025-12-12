@@ -76,12 +76,12 @@ class Group_userManager extends AbstractManager
         {
             // On recrée des objets User (ordre des paramètres basé sur ton UserManager)
             $users[] = new User(
-                $item["id"], 
+                $item["email"],
+                $item["password"], 
                 $item["firstname"], 
                 $item["lastname"], 
-                $item["email"], 
-                $item["password"], 
-                $item["role"]
+                $item["role"],
+                $item["id"]
             );
         }
 
@@ -95,7 +95,7 @@ class Group_userManager extends AbstractManager
         // On sélectionne toutes les infos du groupe (groups.*)
         // en passant par la table de liaison (group_users)
         $query = $this->db->prepare('
-            SELECT groups.* FROM `groups` 
+            SELECT `groups`.* FROM `groups` 
             JOIN group_users ON groups.id = group_users.group_id 
             WHERE group_users.user_id = :user_id
         ');
@@ -110,8 +110,6 @@ class Group_userManager extends AbstractManager
 
         foreach($result as $item)
         {
-            // On recrée des objets Group
-            // Attention : Vérifie bien que les types correspondent à ton constructeur Group
             $groups[] = new Group(
                 $item["id"], 
                 $item["name"], 

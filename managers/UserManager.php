@@ -19,7 +19,7 @@ class UserManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $user = new User($item["id"], $item["firstname"], $item["lastname"], $item["email"], $item["password"], $item["role"]);
+            $user = new User($item["firstname"], $item["lastname"], $item["email"], $item["password"], $item["role"], $item["id"]);
             $users[] = $user;
         }
 
@@ -37,7 +37,7 @@ class UserManager extends AbstractManager
 
         if($item)
         {
-            return new User($item["id"], $item["firstname"], $item["lastname"], $item["email"], $item["password"], $item["role"]);
+            return new User($item["firstname"], $item["lastname"], $item["email"], $item["password"], $item["role"], $item["id"]);
         }
 
         return null;
@@ -54,12 +54,12 @@ class UserManager extends AbstractManager
             if ($data) {
                 // ATTENTION : L'ordre ici doit être IDENTIQUE à User.php
                 return new User(
-                    $data['id'],
                     $data['email'],        // 1. email
                     $data['password'],     // 2. password
                     $data['firstname'],    // 3. firstname (vérifiez le nom de votre colonne en base, ex: first_name ?)
                     $data['lastname'],     // 4. lastname (vérifiez le nom de votre colonne en base, ex: last_name ?)
-                    $data['role']          // 5. role
+                    $data['role'],
+                    $data['id']         // 5. role
                 );
             }
 

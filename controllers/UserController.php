@@ -232,9 +232,13 @@ class UserController extends AbstractController
         $ctrlGroupUser = new Group_userManager;
         $groupUsers = $ctrlGroupUser->findUsersByGroupId($groupId);
 
+        $ctrlExpense = new ExpenseManager;
+        $expenses = $ctrlExpense->findAll();
+
         $this->render("member/expenses.html.twig", [
             "categorys" => $categorys,
-            "users" => $groupUsers
+            "users" => $groupUsers,
+            "expenses" => $expenses
         ]);
     }
 
@@ -249,33 +253,9 @@ class UserController extends AbstractController
         if (!isset($_SESSION['id'])) {
             $this->redirect('index.php?route=login');
         }
-
         $userId = $_SESSION['id'];
-
-        $manager = new GroupManager();
-        $groups = $manager->findAll();
-
-        $manager2 = new Group_userManager();
-        $myGroups = $manager2->findGroupsByUserId($userId);
-        
-        return $this->render('home/home.html.twig', ["groups" => $groups, "myGroups" => $myGroups]);
+        $manager = new Group_userManager();
+        $myGroups = $manager->findGroupsByUserId($userId);
+        return $this->render('home/home.html.twig', ["groups" => $myGroups]);
     }
-    // Dans controllers/UserController.php
-
-    // public function home()
-    // {
-    //     // 1. Vérifier si l'utilisateur est connecté
-    //     if (!isset($_SESSION['id'])) {
-    //         $this->redirect('index.php?route=login');
-    //     }
-
-    //     $userId = $_SESSION['id'];
-
-    //     // 2. Utiliser le Group_userManager pour récupérer SES groupes
-    //     $manager = new Group_userManager();
-    //     $myGroups = $manager->findGroupsByUserId($userId); 
-
-    //     // 3. Envoyer à la vue
-    //     return $this->render('home/home.html.twig', ["groups" => $myGroups]);
-    // }
 }

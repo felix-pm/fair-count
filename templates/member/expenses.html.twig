@@ -9,18 +9,19 @@
         <a href="index.php?route=logout" class="">Se déconnecter</a>
     </li>
     <main class="py-5 container">
-    <input type="text">
+    <input type="text" placeholder="Nom de la dépense">
         <select name="" id="">
             {% for category in categorys %}
                 <option value="{{category.label}}">{{category.label}}</option>
             {% endfor %} 
         </select>
-    <input type="number">
+    <input type="number" placeholder="Montant de la dépense">
     <label for="user-select">Qui a payé ?</label>
     <select name="user_id" id="user-select">
         {% for user in users %}
             <option value="{{ user.id }}">{{ user.firstname }}</option>
         {% endfor %}
     </select>
+    <h2>{{}}</h2>
     </main>
 {% endblock %}
