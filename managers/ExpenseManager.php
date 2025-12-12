@@ -117,8 +117,6 @@ class ExpenseManager extends AbstractManager
             // D. Récupération des Participants (via la nouvelle méthode)
             $participantsList = $this->findParticipantsByExpenseId($result['expense_id']);
             
-            // Si ta classe Expense attend UN seul participant au début (ce qui est bizarre mais semble être ton cas actuel)
-            // On prend le premier de la liste pour éviter que ça plante, ou null si vide.
             $firstParticipant = !empty($participantsList) ? $participantsList[0] : null;
 
             $exp = new Expense(
