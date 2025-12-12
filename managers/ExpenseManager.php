@@ -107,6 +107,3 @@ class ExpenseManager extends AbstractManager
 
 ?>
 
-INSERT INTO `expenses` (`id`, `title`, `amount`, `date`, `user_id`, `category_id`, `group_id`, `created_at`) VALUES ('1', 'bière', '15', '2025-12-09', '1', '4', '1', CURRENT_TIMESTAMP)
-
-INSERT INTO `groups` (`id`, `name`, `created_by`, `created_at`) VALUES ('1', 'the_league', 'Pierre', CURRENT_TIMESTAMP)
