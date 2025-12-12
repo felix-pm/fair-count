@@ -2,7 +2,7 @@
 
 class Group_user
 {
-    public function __construct(int $id, string $group_id, string $user_id)
+    public function __construct(private int $id,private Group  $group_id,private User $user_id)
     {
 
     }
@@ -20,12 +20,12 @@ class Group_user
     }
 
 
-    public function getGroup_id()
+    public function getGroup_id() : Group
     {
         return $this->group_id;
     }
 
-    public function setGroup_id($group_id)
+    public function setGroup_id($group_id) : Group
     {
         $this->group_id = $group_id;
 
@@ -33,12 +33,12 @@ class Group_user
     }
 
     
-    public function getUser_id()
+    public function getUser_id() : User
     {
         return $this->user_id;
     }
 
-    public function setUser_id($user_id)
+    public function setUser_id($user_id) : User
     {
         $this->user_id = $user_id;
 
