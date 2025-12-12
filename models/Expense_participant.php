@@ -3,7 +3,7 @@
 class Expense_participant
 {
 
-    public function __construct(private int $id, private int $expense_id, private User $user_id)
+    public function __construct(private int $id, private Expense $expense_id, private User $user_id)
     {
 
     }     
