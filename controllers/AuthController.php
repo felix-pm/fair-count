@@ -23,6 +23,7 @@ class AuthController extends AbstractController
                     if ($user !== null) {
                         $hashedPassword = $user->getPassword();
                         if (password_verify($_POST["password"], $hashedPassword)) {
+                            $_SESSION["id"] = $user->getId();
                             $_SESSION['firstname'] = $user->getFirstName();
                             $_SESSION['lastname'] = $user->getLastName();
                             $_SESSION['email'] = $user->getEmail();

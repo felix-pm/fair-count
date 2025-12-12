@@ -9,8 +9,18 @@
         <a href="index.php?route=logout" class="">Se déconnecter</a>
     </li>
     <main class="py-5 container">
-        {% for group in groups %}
-            <p>{{ group.label }}</p>
+    <input type="text">
+        <select name="" id="">
+            {% for category in categorys %}
+                <option value="{{category.label}}">{{category.label}}</option>
+            {% endfor %} 
+        </select>
+    <input type="number">
+    <label for="user-select">Qui a payé ?</label>
+    <select name="user_id" id="user-select">
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.firstname }}</option>
         {% endfor %}
+    </select>
     </main>
 {% endblock %}

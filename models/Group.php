@@ -2,7 +2,7 @@
 
 class Group
 {
-    public function __construct(int $id, string $name, string $created_by, Datetime $created_at)
+    public function __construct(private int $id, private string $name, private string $created_by, private string $created_at)
     {
 
     }  

@@ -1,6 +1,6 @@
 <?php
 
-class GroupManager extends AbstractManager
+class Group_userManager extends AbstractManager
 {
     public function __construct()
     {
@@ -50,6 +50,77 @@ class GroupManager extends AbstractManager
 
         return $group_user;
 
+    }
+
+    // Dans managers/Group_userManager.php
+
+    public function findUsersByGroupId(int $groupId) : array
+    {
+        // On sélectionne toutes les infos de l'utilisateur
+        // en passant par la table de liaison group_users
+        $query = $this->db->prepare('
+            SELECT users.* FROM users 
+            JOIN group_users ON users.id = group_users.user_id 
+            WHERE group_users.group_id = :group_id
+        ');
+
+        $parameters = [
+            "group_id" => $groupId
+        ];
+
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $users = [];
+
+        foreach($result as $item)
+        {
+            // On recrée des objets User (ordre des paramètres basé sur ton UserManager)
+            $users[] = new User(
+                $item["id"], 
+                $item["firstname"], 
+                $item["lastname"], 
+                $item["email"], 
+                $item["password"], 
+                $item["role"]
+            );
+        }
+
+        return $users;
+    }
+
+    // Dans managers/Group_userManager.php
+
+    public function findGroupsByUserId(int $userId) : array
+    {
+        // On sélectionne toutes les infos du groupe (groups.*)
+        // en passant par la table de liaison (group_users)
+        $query = $this->db->prepare('
+            SELECT groups.* FROM `groups` 
+            JOIN group_users ON groups.id = group_users.group_id 
+            WHERE group_users.user_id = :user_id
+        ');
+
+        $parameters = [
+            "user_id" => $userId
+        ];
+
+        $query->execute($parameters);
+        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $groups = [];
+
+        foreach($result as $item)
+        {
+            // On recrée des objets Group
+            // Attention : Vérifie bien que les types correspondent à ton constructeur Group
+            $groups[] = new Group(
+                $item["id"], 
+                $item["name"], 
+                $item["created_by"], 
+                $item["created_at"]
+            );
+        }
+
+        return $groups;
     }
 
 }

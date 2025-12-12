@@ -54,6 +54,7 @@ class UserManager extends AbstractManager
             if ($data) {
                 // ATTENTION : L'ordre ici doit être IDENTIQUE à User.php
                 return new User(
+                    $data['id'],
                     $data['email'],        // 1. email
                     $data['password'],     // 2. password
                     $data['firstname'],    // 3. firstname (vérifiez le nom de votre colonne en base, ex: first_name ?)

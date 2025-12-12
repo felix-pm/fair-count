@@ -15,14 +15,14 @@ class CategoryManager extends AbstractManager
         ];
         $query->execute($parameters);
         $result = $query->fetchAll(PDO::FETCH_ASSOC);
-        $users = [];
+        $categorys = [];
 
         foreach($result as $item)
         {
-            $user = new Category($item["id"], $item["label"]);
-            $users[] = $user;
+            $category = new Category($item["id"], $item["label"]);
+            $categorys[] = $category;
         }
 
-        return $users;
+        return $categorys;
     }
 }

@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block main %}
-    <li>
-        <a href="index.php?route=logout" class="">Se déconnecter</a>
-    </li>
+    <a href="index.php?route=logout" class="">Se déconnecter</a>
+    {% for group in groups %}
+        <a href="?route=expenses&id={{group.id}}"> {{group.name}} </a>
+    {% endfor %}
 {% endblock %}

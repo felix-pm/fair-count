@@ -3,7 +3,7 @@
 class User
 {
 
-    public function __construct(private string $email, private string $password, private string $firstname, private string $lastname, private string $role)
+    public function __construct(private int $id, private string $email, private string $password, private string $firstname, private string $lastname, private string $role)
     {
 
     }  
@@ -77,6 +77,18 @@ class User
     public function setRole($role)
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }

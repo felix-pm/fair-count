@@ -14,7 +14,7 @@ class Router
     {
         if(!empty($_GET['route'])) {
             if($_GET['route'] === 'home') {
-                $this->ac->home();
+                $this->uc->home();
             }
             else if($_GET['route'] === 'login') {
                 $this->ac->login();
