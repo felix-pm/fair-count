@@ -5,7 +5,12 @@
 {% endblock %}
 
 {% block main %}
+    <li>
+        <a href="index.php?route=logout" class="btn-logout">Se déconnecter</a>
+    </li>
     <main class="py-5 container">
-        <h1>Accueil</h1>
+        {% for user in users %}
+            <li>{{ user }}</li>
+        {% endfor %}
     </main>
 {% endblock %}
