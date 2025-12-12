@@ -242,9 +242,16 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function balances() : void //page initiale lorsque l'on clique sur un groupe
+    public function affichage_expenses() : void 
     {
-        $this->render("member/balances.html.twig", []);
+        $this->render("member/affichage_expenses.html.twig", []);
+    }
+
+    public function reimbursement() : void 
+    {
+        $ctrl = new ReimbursementManager;
+        $datas = $ctrl->findAll();
+        $this->render("member/reimbursement.html.twig", []);
     }
 
 

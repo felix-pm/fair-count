@@ -1,6 +1,6 @@
 <?php
 
-class ReimbursementManager
+class ReimbursementManager extends AbstractManager
 {
     private $pdo;
 

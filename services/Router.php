@@ -55,6 +55,12 @@ class Router
             else if($_GET['route'] === 'expenses') {
                 $this->uc->expenses();
             }
+            else if($_GET['route'] === 'reimbursement') {
+                $this->uc->reimbursement();
+            }
+            else if($_GET['route'] === 'affichage_expenses') {
+                $this->uc->affichage_expenses();
+            }
             else
             {
                 $this->ac->notFound();
