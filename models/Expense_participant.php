@@ -3,7 +3,7 @@
 class Expense_participant
 {
 
-    public function __construct(private int $id, private int $expense_id, private int $user_id)
+    public function __construct(private int $id, private int $expense_id, private User $user_id)
     {
 
     }     
@@ -32,12 +32,12 @@ class Expense_participant
         return $this;
     }
     
-    public function getUser_id()
+    public function getUser_id():User
     {
         return $this->user_id;
     }
    
-    public function setUser_id($user_id)
+    public function setUser_id($user_id):self
     {
         $this->user_id = $user_id;
 
