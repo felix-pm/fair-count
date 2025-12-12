@@ -20,7 +20,7 @@ class Expense_participant
         return $this;
     }
    
-    public function getExpense_id()
+    public function getExpense_id() :Expense
     {
         return $this->expense_id;
     }

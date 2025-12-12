@@ -8,99 +8,134 @@ class ExpenseManager extends AbstractManager
         parent::__construct();
     }
 
-    public function findAll() : array
+
+    public function findParticipantsByExpenseId(int $expenseId) : array
     {
-        $query = $this->db->prepare(
-        'SELECT expenses.id AS expense_id,
-            expenses.title,
-            expenses.amount,
-            expenses.date,
-            expenses.user_id AS userid,
-            expenses.category_id AS categoryid,
-            expenses.group_id AS expense_group_fk,
-            expenses.created_at AS createdat,
-            
-           
-            categories.id AS category_id,
-            categories.label,
-
-            
-            groups.id AS groupid,
-            groups.name AS group_name,
-            groups.created_by,
-            groups.created_at AS group_created_at,
-           
-            expense_participants.id AS participant_id,
-            expense_participants.user_id AS user_id1,
-            
-            
-            users.email,
-            users.password,
-            users.firstname,
-            users.lastname,
-            users.role
-            
-        FROM expenses
-        JOIN expense_participants ON expenses.id = expense_participants.expense_id
-        JOIN users ON expense_participants.user_id = users.id
-        JOIN groups ON expenses.group_id = groups.id
-        JOIN categories ON expenses.category_id = categories.id 
-     
-          ');
+        $query = $this->db->prepare('
+            SELECT expense_participants.id as part_id, 
+                   expense_participants.expense_id,
+                   users.* FROM expense_participants
+            JOIN users ON expense_participants.user_id = users.id
+            WHERE expense_participants.expense_id = :expense_id
+        ');
         
-        $parameters = [
-        
-        ];
-
-        $query->execute($parameters);
+        $query->execute(["expense_id" => $expenseId]);
         $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-        $expense = [];
-
-        foreach($results as $result) {            
-
-            $group = new Group(
-                $result['groupid'],
-                $result['group_name'],
-                $result['created_by'],
-                $result['group_created_at']               
+        
+        $participants = [];
+        
+        foreach($results as $item) {
+            // 1. On crée le User (le participant)
+            $participantUser = new User(
+                $item['email'],
+                $item['password'],
+                $item['firstname'],
+                $item['lastname'],
+                $item['role'],
+                $item['id']
             );
 
-            $user= new User(
+            // 2. On crée le lien (Expense_participant)
+            // Note: On passe juste l'ID de la dépense, pas l'objet entier, pour éviter la boucle infinie
+            $participants[] = new Expense_participant(
+                $item['part_id'],
+                $item['expense_id'],
+                $participantUser
+            );
+        }
+
+        return $participants;
+    }
+
+    // Dans managers/ExpenseManager.php
+
+    public function findAll() : array
+    {
+        // 1. La requête se concentre sur la Dépense et le PAYEUR (users)
+        // J'utilise des alias (AS) pour bien différencier les IDs
+        $query = $this->db->prepare('
+            SELECT 
+                expenses.id AS expense_id,
+                expenses.title,
+                expenses.amount,
+                expenses.date,
+                expenses.created_at AS expense_created_at,
+                
+                cat.id AS category_id,
+                cat.label AS category_label,
+                
+                grp.id AS group_id,
+                grp.name AS group_name,
+                grp.created_by AS group_created_by,
+                grp.created_at AS group_created_at,
+                
+                users.id AS payer_id,
+                users.email,
+                users.password,
+                users.firstname,
+                users.lastname,
+                users.role
+
+            FROM expenses
+            JOIN categories AS cat ON expenses.category_id = cat.id
+            JOIN `groups` AS grp ON expenses.group_id = grp.id
+            JOIN users ON expenses.user_id = users.id  -- ICI on joint le PAYEUR
+        ');
+
+        $query->execute();
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        $expenses = [];
+
+        foreach($results as $result) {
+
+            // A. Création du Groupe
+            $group = new Group(
+                $result['group_id'],
+                $result['group_name'],
+                $result['group_created_by'],
+                $result['group_created_at']
+            );
+
+            // B. Création de la Catégorie
+            $category = new Category(
+                $result['category_id'],
+                $result['category_label']
+            );
+
+            // C. Création du Payeur (User)
+            // Attention à bien utiliser les données qui viennent de la table users jointe ci-dessus
+            // Si ta classe User n'a pas l'ID en dernier paramètre, adapte l'ordre ici
+            $payer = new User(
                 $result['email'],
                 $result['password'],
                 $result['firstname'],
                 $result['lastname'],
                 $result['role'],
+                $result['payer_id']
             );
-
-            $expense_participant = new Expense_participant(
-                $result['participant_id'],
-                $result['expense_id'],
-                $user
-            );
-
-            $category= new Category(
-                $result['category_id'],
-                $result['label']              
-            );           
             
+            // D. Récupération des Participants (via la nouvelle méthode)
+            $participantsList = $this->findParticipantsByExpenseId($result['expense_id']);
+            
+            // Si ta classe Expense attend UN seul participant au début (ce qui est bizarre mais semble être ton cas actuel)
+            // On prend le premier de la liste pour éviter que ça plante, ou null si vide.
+            $firstParticipant = !empty($participantsList) ? $participantsList[0] : null;
 
-            $exp=new Expense(
-                $expense_participant,
+            $exp = new Expense(
+                $firstParticipant, // Ton constructeur semble attendre ça en premier
                 $result["title"],
                 $result["amount"],
                 $result["date"],
-                $result["userid"],                
+                $result["payer_id"], // L'ID du payeur
                 $category,
-                $group,               
-                $result["createdat"]                
+                $group,
+                $result["expense_created_at"]
             );
 
-            $expense[]=$exp;
+            $expenses[] = $exp;
         }
 
-        return $expense;
+        return $expenses;
     }
 
 }
