@@ -209,11 +209,21 @@ class UserController extends AbstractController
 
     public function expenses() : void //page des dépenses
     {
-        $this->render("member/expenses.html.twig", []);
+        $ctrl = new CategoryManager;
+        $groups = $ctrl->findAll();
+        $this->render("member/expenses.html.twig", ["groupes" => $groups]);
     }
 
     public function balances() : void //page initiale lorsque l'on clique sur un groupe
     {
         $this->render("member/balances.html.twig", []);
+    }
+
+
+    public function home()
+    {
+        $manager = new GroupManager();
+        $groups = $manager->findAll(); 
+        return $this->render('home.html.twig', ["groups" => $groups]);
     }
 }

@@ -52,6 +52,9 @@ class Router
             else if($_GET['route'] === 'show_user') {
                 $this->uc->show_user();
             }
+            else if($_GET['route'] === 'expenses') {
+                $this->uc->expenses();
+            }
             else
             {
                 $this->ac->notFound();

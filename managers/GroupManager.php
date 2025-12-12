@@ -9,7 +9,7 @@ class GroupManager extends AbstractManager
 
     public function findAll() : array
     {
-        $query = $this->db->prepare('SELECT * FROM groups');
+        $query = $this->db->prepare('SELECT * FROM `groups`');
         $parameters = [
 
         ];
@@ -28,7 +28,7 @@ class GroupManager extends AbstractManager
 
     public function findById(int $id) : ? Group
     {
-        $query = $this->db->prepare('SELECT * FROM groups WHERE id = :id');
+        $query = $this->db->prepare('SELECT * FROM `groups` WHERE id = :id');
         $parameters = [
             "id" => $id
         ];
@@ -45,7 +45,7 @@ class GroupManager extends AbstractManager
 
     public function findByName(string $name) : ? Group
     {
-        $query = $this->db->prepare('SELECT * FROM groups WHERE email = :email');
+        $query = $this->db->prepare('SELECT * FROM `groups` WHERE name = :name');
         $parameters = [
             "name" => $name
         ];
@@ -62,7 +62,7 @@ class GroupManager extends AbstractManager
 
     public function create(Group $group) : void
     {
-        $query = $this->db->prepare('INSERT INTO groups (name, created_by, created_at, password, role) VALUES (:name, :created_by, :created_at)');
+        $query = $this->db->prepare('INSERT INTO `groups` (name, created_by, created_at) VALUES (:name, :created_by, :created_at)');
         $parameters = [
             "name" => $group->getName(),
             "created_by" => $group->getCreated_by(),
@@ -73,19 +73,19 @@ class GroupManager extends AbstractManager
 
     public function update(Group $group) : void
     {
-        $query = $this->db->prepare('UPDATE groups SET name = :name, created_by = :created_by, created_at = :created_at WHERE id = :id');;
+        $query = $this->db->prepare('UPDATE `groups` SET name = :name, created_by = :created_by, created_at = :created_at WHERE id = :id');;
         $parameters = [
             "id" => $group->getId(),
-            "name" => $group->getFirstName(),
-            "created_by" => $group->getLastName(),
-            "created_at" => $group->getEmail()
+            "name" => $group->getName(),
+            "created_by" => $group->getCreated_by(),
+            "created_at" => $group->getCreated_at()
         ];
         $query->execute($parameters);
     }
 
     public function delete(Group $group) : void
     {
-        $query = $this->db->prepare('DELETE FROM groups WHERE id = :id');;
+        $query = $this->db->prepare('DELETE FROM `groups` WHERE id = :id');;
         $parameters = [
             "id" => $group->getId()
         ];

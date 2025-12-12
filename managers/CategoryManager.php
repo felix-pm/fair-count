@@ -19,7 +19,7 @@ class CategoryManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $user = new User($item["id"], $item["label"]);
+            $user = new Category($item["id"], $item["label"]);
             $users[] = $user;
         }
 
