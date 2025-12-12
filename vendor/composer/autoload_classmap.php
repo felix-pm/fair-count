@@ -14,6 +14,7 @@ return array(
     'CategoryManager' => $baseDir . '/managers/CategoryManager.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Expense' => $baseDir . '/models/Expense.php',
+    'ExpenseManager' => $baseDir . '/managers/ExpenseManager.php',
     'Expense_participant' => $baseDir . '/models/Expense_participant.php',
     'Group' => $baseDir . '/models/Group.php',
     'GroupManager' => $baseDir . '/managers/GroupManager.php',

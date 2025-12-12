@@ -3,12 +3,12 @@
 class Expense
 {
 
-    public function __construct(private Expense $id, private string $title, private int $amount, private Datetime $date, private int $user_id, private Category $category_id, private Group $group_id, private int $created_at)
+    public function __construct(private Expense_participant $id, private string $title, private int $amount, private Datetime $date, private int $user_id, private Category $category_id, private Group $group_id, private int $created_at)
     {
 
     }  
     
-    public function getId():Expense
+    public function getId():Expense_participant
     {
         return $this->id;
     }

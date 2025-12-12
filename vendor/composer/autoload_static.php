@@ -88,6 +88,7 @@ class ComposerStaticInit1563689cb0cfd32488cf45b6250d9732
         'CategoryManager' => __DIR__ . '/../..' . '/managers/CategoryManager.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Expense' => __DIR__ . '/../..' . '/models/Expense.php',
+        'ExpenseManager' => __DIR__ . '/../..' . '/managers/ExpenseManager.php',
         'Expense_participant' => __DIR__ . '/../..' . '/models/Expense_participant.php',
         'Group' => __DIR__ . '/../..' . '/models/Group.php',
         'GroupManager' => __DIR__ . '/../..' . '/managers/GroupManager.php',
