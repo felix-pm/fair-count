@@ -10,7 +10,7 @@ class AuthController extends AbstractController
     public function login() : void
     {
         if (!empty($_POST)) {
-            if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirmPassword'])){
+            if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirmPassword'])){
                 $error = "Vos données ne sont pas toutes remplies !";
             }
             $manager = new UserManager();
@@ -27,8 +27,8 @@ class AuthController extends AbstractController
             $user = $manager->findByEmail($email);
             if ($user) {
                 if (password_verify($password, $user->getPassword())) {
-                    $_SESSION["firstName"] = $user->getFirstName();
-                    $_SESSION["lastName"] = $user->getLastName();
+                    $_SESSION["firstname"] = $user->getFirstName();
+                    $_SESSION["lastname"] = $user->getLastName();
                     $_SESSION["email"] = $user->getEmail();
                     $_SESSION["user_role"] = $user->getRole();
                     $_SESSION["id"] = $user->getId();
@@ -52,29 +52,28 @@ class AuthController extends AbstractController
 
     public function register(): void
 {
-    $error = null;
-    if (!empty($_POST)) {
-        if (empty($_POST['firstName']) || empty($_POST['lastName']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirmPassword'])) {
-            $error = "Vos données ne sont pas toutes remplies !";
+    $errors = [];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST')
+    {
+        if (empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirmPassword'])) {
+            $errors[] = "Vos données ne sont pas toutes remplies !";
         }
         elseif ($_POST['password'] !== $_POST['confirmPassword']) {
-            $error = "Vos mots de passe ne sont pas identiques !";
+            $errors[] = "Vos mots de passe ne sont pas identiques !";
         }
         else {
             $manager = new UserManager();
-            $users = $manager->findAll(); 
-            foreach ($users as $user) {
-                if ($user->getEmail() === $_POST['email']) {
-                    $error = "Votre email est déjà utilisé !";
-                    break; 
-                }
+            $users = $manager->findByEmail($_POST["email"]); 
+            if($users != null)
+            {
+                $errors[] = "Votre email est déjà utilisé !";
             }
         }
-        if ($error === null) {
+        if (empty($errors)) {
             $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $userToCreate = new User(
-                $_POST['firstName'],
-                $_POST['lastName'],
+                $_POST['firstname'],
+                $_POST['lastname'],
                 $_POST['email'],
                 $hashedPassword
             );
