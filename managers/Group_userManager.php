@@ -121,4 +121,49 @@ class Group_userManager extends AbstractManager
         return $groups;
     }
 
+    public function findGroupId(int $userId, int $Id) : array
+    {
+        $groupIds = $this->findGroupsByUserId($userId);
+        foreach ($groupIds as $groupId) 
+        {
+            if ($Id === $groupId['id']) {
+                return $groupId['id'];
+            }
+        }
+    }
+
+    public function findGroupId(int $userId, int $groupId) : ?Group
+{
+    // On cherche le groupe MAIS on vérifie aussi que l'user_id correspond
+    $query = $this->db->prepare('
+        SELECT `groups`.* FROM `groups` 
+        JOIN group_users ON groups.id = group_users.group_id 
+        WHERE group_users.user_id = :user_id 
+        AND groups.id = :group_id
+    ');
+
+    $parameters = [
+        "user_id" => $userId,
+        "group_id" => $groupId
+    ];
+
+    $query->execute($parameters);
+    
+    // On utilise fetch() au lieu de fetchAll() car on ne veut qu'un seul résultat
+    $item = $query->fetch(PDO::FETCH_ASSOC);
+
+    // Si aucun résultat (l'utilisateur n'est pas dans ce groupe ou le groupe n'existe pas)
+    if (!$item) {
+        return null;
+    }
+
+    // On retourne l'objet Group unique
+    return new Group(
+        $item["id"], 
+        $item["name"], 
+        $item["created_by"], 
+        $item["created_at"]
+    );
+}
+
 }

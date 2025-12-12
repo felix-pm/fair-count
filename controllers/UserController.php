@@ -238,8 +238,8 @@ class UserController extends AbstractController
         if (!isset($_SESSION['id'])) {
             $this->redirect('index.php?route=login');
         }
-        $userId = $_SESSION['id'];       
-        $myGroups = $ctrlGroupUser->findGroupsByUserId($userId);
+        $userId = $_SESSION['id'];
+        $myGroups = $ctrlGroupUser->findGroupId($userId, $groupId);
 
         $this->render("member/expenses.html.twig", [
             "categorys" => $categorys,

@@ -6,16 +6,14 @@
 
 {% block main %}
 
-{%(for expense in expenses)%}
-{
-    <p>{{expense.date}}</p>
-    <p>{{expense.title}}</p>
-    <p>{{expense.amount}}</p>
-    <p>{{expense.amount}}</p>
-    
+{% for expense in expenses %}
+        <p>{{expense.date}}</p>
+        <p>{{expense.title}}</p>
+        <p>{{expense.amount}}</p>
+        <p>{{expense.amount}}</p>
+{% endfor %}
 
 
-}
-<a href="?route=expenses&id={{}}">Ajouter une dépense</a>
+<a href="?route=expenses&id={{groups}}">Ajouter une dépense</a>
 
 {% endblock %}
