@@ -112,15 +112,11 @@ class ExpenseManager extends AbstractManager
                 $result['lastname'],
                 $result['role'],
                 $result['payer_id']
-            );
+            );    
             
-            // D. Récupération des Participants (via la nouvelle méthode)
-            $participantsList = $this->findParticipantsByExpenseId($result['expense_id']);
-            
-            $firstParticipant = !empty($participantsList) ? $participantsList[0] : null;
 
             $exp = new Expense(
-                $firstParticipant, // Ton constructeur semble attendre ça en premier
+                $result["expense_id"], // Ton constructeur semble attendre ça en premier
                 $result["title"],
                 $result["amount"],
                 $result["date"],

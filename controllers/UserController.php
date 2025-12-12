@@ -235,10 +235,17 @@ class UserController extends AbstractController
         $ctrlExpense = new ExpenseManager;
         $expenses = $ctrlExpense->findAll();
 
+        if (!isset($_SESSION['id'])) {
+            $this->redirect('index.php?route=login');
+        }
+        $userId = $_SESSION['id'];       
+        $myGroups = $ctrlGroupUser->findGroupsByUserId($userId);
+
         $this->render("member/expenses.html.twig", [
             "categorys" => $categorys,
             "users" => $groupUsers,
-            "expenses" => $expenses
+            "expenses" => $expenses,
+            "groups" => $myGroups
         ]);
     }
 

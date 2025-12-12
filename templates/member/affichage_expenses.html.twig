@@ -1,0 +1,21 @@
+{% extends "layout.html.twig" %}
+
+{% block header %}
+    {% include "partials/_header.html.twig" %}
+{% endblock %}
+
+{% block main %}
+
+{%(for expense in expenses)%}
+{
+    <p>{{expense.date}}</p>
+    <p>{{expense.title}}</p>
+    <p>{{expense.amount}}</p>
+    <p>{{expense.amount}}</p>
+    
+
+
+}
+<a href="?route=expenses&id={{}}">Ajouter une dépense</a>
+
+{% endblock %}
