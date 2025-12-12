@@ -3,12 +3,20 @@
 class Expense
 {
 
+<<<<<<< HEAD
     public function __construct(private int $id, private string $title, private int $amount, private Datetime $date, User $user_id, private int $category_id, private Group $group_id, private int $created_at)
+=======
+    public function __construct(private Expense_participant $id, private string $title, private int $amount, private Datetime $date, private int $user_id, private Category $category_id, private Group $group_id, private int $created_at)
+>>>>>>> fe4e7e59c9eb976a1d0dcf1686901d5b10254dbd
     {
 
     }  
     
+<<<<<<< HEAD
     public function getId()
+=======
+    public function getId():Expense_participant
+>>>>>>> fe4e7e59c9eb976a1d0dcf1686901d5b10254dbd
     {
         return $this->id;
     }

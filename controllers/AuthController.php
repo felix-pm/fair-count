@@ -91,4 +91,9 @@ class AuthController extends AbstractController
     {
         $this->render('error/notFound.html.twig', []);
     }
+
+    public function page_connexion(): void
+        {
+            $this->render('auth/page_connexion.html.twig', []);
+        }
 }
