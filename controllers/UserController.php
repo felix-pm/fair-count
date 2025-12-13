@@ -265,24 +265,61 @@ class UserController extends AbstractController
         if (!isset($_GET['id'])) {
             $this->redirect('index.php?route=home'); 
         }
-        
+        else{           
+            
+        $errors = [];
         $groupId = (int) $_GET['id'];
-
         $ctrlCategory = new CategoryManager;
-        $categorys = $ctrlCategory->findAll();
-
-        $ctrlGroupUser = new Group_userManager;
+        $ctrlGroupUser = new Group_userManager;        
+        $ctrlExpense = new ExpenseManager;
+        $ctrlUser = new UserManager;
+        $ctrlGroup = new GroupManager; 
+        $categorys = $ctrlCategory->findAll();        
         $groupUsers = $ctrlGroupUser->findUsersByGroupId($groupId);
 
-        $ctrlExpense = new ExpenseManager;
-        $expenses = $ctrlExpense->findAll();        
+        
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+            if( (empty($_POST["expense_name"])) || (empty($_POST["category"])) || (empty($_POST["expense_amount"])) || (empty($_POST["user_id"])) || (empty($_POST["expense_date"]))) {  
+                $errors[] = "Veuillez remplir tous les champs !";
+            } 
+
+            if(empty($errors)){
+               
+                $user = $ctrlUser->findById($_POST["user_id"]);
+                $category = $ctrlCategory->findByName($_POST["category"]);
+                $group = $ctrlGroup->findById($groupId);
+                $currentDate=date('Y-m-d H:i:s');
+
+                $participantIds = [];
+        
+        
+                foreach ($groupUsers as $groupMember) {
+            
+                $participantIds[] = $groupMember->getId();
+                }
+
+                $Expense = new Expense($_POST["expense_name"], $_POST["expense_amount"], $_POST["expense_date"],$user,$category,$group,$currentDate);
+                $ctrlExpense->create_expense($Expense,$participantIds);
+
+                $this->redirect('index.php?route=affichage_expense');
+                return;
+        
+            }
+        }
+        
+        
+        
 
         $this->render("member/expenses.html.twig", [
-            "categorys" => $categorys,
-            "users" => $groupUsers,
-            "expenses" => $expenses            
+            "categorys" => $categorys,            
+            "group_users" => $groupUsers            
         ]);
-    }
+        }
+        }
+
+    
 
     public function affichage_expenses() : void 
     {

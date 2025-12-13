@@ -19,10 +19,23 @@ class CategoryManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $category = new Category($item["id"], $item["label"]);
+            $category = new Category($item["label"], $item["id"]);
             $categorys[] = $category;
         }
 
         return $categorys;
+    }
+
+    public function findByName(int $label) : Category
+    {
+        $query = $this->db->prepare('SELECT * FROM categories WHERE label = :label');
+        $parameters = [
+            'label'=> $label
+
+        ];
+        $query->execute($parameters);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        return new Category($result["label"], $result["id"]);
     }
 }

@@ -32,24 +32,24 @@ class User
         return $this;
     }
     
-    public function getfirstname()
+    public function getFirstname()
     {
         return $this->firstname;
     }
     
-    public function setfirstname($firstname)
+    public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getlastname()
+    public function getLastname()
     {
         return $this->lastname;
     }
     
-    public function setlastname($lastname)
+    public function setLastname($lastname)
     {
         $this->lastname = $lastname;
 

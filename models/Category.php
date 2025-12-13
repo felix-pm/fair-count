@@ -2,7 +2,7 @@
 
 class Category
 {
-    public function __construct(private int $id, private string $label)
+    public function __construct(private string $label, private ?int $id = null)
     {
 
     }  

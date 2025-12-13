@@ -56,4 +56,22 @@ class Expense_participantManager extends AbstractManager
 
     }
 
+    public function create(int $expenseId, $userid) 
+    {
+        $query = $this->db->prepare(
+        'INSERT INTO expense_participants (expense_id, user_id) 
+        VALUES (:expense_id, :user_id');
+
+        $parameters = [
+            "expense_id"=>$expenseId,
+            "user_id"=>$userid
+
+        ];
+
+        $query->execute($parameters);
+        
+
+
+    }
+
 }

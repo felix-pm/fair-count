@@ -6,11 +6,14 @@
 
 {% block main %}
 
+
 {% for expense in expenses %}
+    {% if expense.group_id.id == groups %}
         <p>{{expense.date}}</p>
         <p>{{expense.title}}</p>
         <p>{{expense.amount}}</p>
-        <p>{{expense.amount}}</p>
+        <p>Payé par:{{expense.user_id.firstname}}</p>
+    {% endif %}
 {% endfor %}
 
 <a href="?route=expenses&id={{groups}}">Ajouter une dépense</a>

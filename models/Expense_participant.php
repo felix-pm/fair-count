@@ -3,7 +3,7 @@
 class Expense_participant
 {
     // On change le type de $expense_id : Expense -> int
-    public function __construct(private int $id, private int $expense_id, private User $user_id)
+    public function __construct(private int $expense_id, private int $user_id, private ?int $id = null)
     {
 
     }     
@@ -32,12 +32,12 @@ class Expense_participant
         return $this;
     }
     
-    public function getUser_id(): User
+    public function getUser_id()
     {
         return $this->user_id;
     }
    
-    public function setUser_id($user_id): self
+    public function setUser_id($user_id)
     {
         $this->user_id = $user_id;
         return $this;

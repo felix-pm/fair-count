@@ -6,53 +6,11 @@ class ExpenseManager extends AbstractManager
     public function __construct()
     {
         parent::__construct();
-    }
-
-
-    public function findParticipantsByExpenseId(int $expenseId) : array
-    {
-        $query = $this->db->prepare('
-            SELECT expense_participants.id as part_id, 
-                   expense_participants.expense_id,
-                   users.* FROM expense_participants
-            JOIN users ON expense_participants.user_id = users.id
-            WHERE expense_participants.expense_id = :expense_id
-        ');
-        
-        $query->execute(["expense_id" => $expenseId]);
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
-        
-        $participants = [];
-        
-        foreach($results as $item) {
-            // 1. On crée le User (le participant)
-            $participantUser = new User(
-                $item['email'],
-                $item['password'],
-                $item['firstname'],
-                $item['lastname'],
-                $item['role'],
-                $item['id']
-            );
-
-            // 2. On crée le lien (Expense_participant)
-            // Note: On passe juste l'ID de la dépense, pas l'objet entier, pour éviter la boucle infinie
-            $participants[] = new Expense_participant(
-                $item['part_id'],
-                $item['expense_id'],
-                $participantUser
-            );
-        }
-
-        return $participants;
-    }
-
-    // Dans managers/ExpenseManager.php
+    }   
 
     public function findAll() : array
     {
-        // 1. La requête se concentre sur la Dépense et le PAYEUR (users)
-        // J'utilise des alias (AS) pour bien différencier les IDs
+        
         $query = $this->db->prepare('
             SELECT 
                 expenses.id AS expense_id,
@@ -79,7 +37,7 @@ class ExpenseManager extends AbstractManager
             FROM expenses
             JOIN categories AS cat ON expenses.category_id = cat.id
             JOIN `groups` AS grp ON expenses.group_id = grp.id
-            JOIN users ON expenses.user_id = users.id  -- ICI on joint le PAYEUR
+            JOIN users ON expenses.user_id = users.id
         ');
 
         $query->execute();
@@ -89,22 +47,18 @@ class ExpenseManager extends AbstractManager
         foreach($results as $result) {
 
             // A. Création du Groupe
-            $group = new Group(
-                $result['group_id'],
+            $group = new Group(              
                 $result['group_name'],
                 $result['group_created_by'],
-                $result['group_created_at']
+                $result['group_created_at'],
+                $result['group_id']
             );
-
-            // B. Création de la Catégorie
-            $category = new Category(
-                $result['category_id'],
-                $result['category_label']
+           
+            $category = new Category(                
+                $result['category_label'],
+                $result['category_id']
             );
-
-            // C. Création du Payeur (User)
-            // Attention à bien utiliser les données qui viennent de la table users jointe ci-dessus
-            // Si ta classe User n'a pas l'ID en dernier paramètre, adapte l'ordre ici
+            
             $payer = new User(
                 $result['email'],
                 $result['password'],
@@ -115,21 +69,46 @@ class ExpenseManager extends AbstractManager
             );    
             
 
-            $exp = new Expense(
-                $result["expense_id"], // Ton constructeur semble attendre ça en premier
+            $exp = new Expense(                
                 $result["title"],
                 $result["amount"],
                 $result["date"],
-                $result["payer_id"], // L'ID du payeur
+                $payer,
                 $category,
                 $group,
-                $result["expense_created_at"]
+                $result["expense_created_at"],
+                $result["expense_id"]
             );
 
             $expenses[] = $exp;
         }
 
         return $expenses;
+    }
+
+    public function create_expense(Expense $expense, array $participantIds):void
+    {
+        $expenseParticipantManager = new Expense_participantManager();
+        $query = $this->db->prepare(
+        'INSERT INTO expense (title, amount, date, user_id, category_id, group_id, created_at) 
+        VALUES (:title, :amount, :date, :user_id, :category.id, :group_id, :created_at)');
+        $parameters = [
+            "title" => $expense->getTitle(),
+            "amount" => $expense->getAmount(),
+            "date" => $expense->getDate(),
+            "user_id" => $expense->getUser_id()->getId(),
+            "category_id" => $expense->getCategory_id()->getId(),
+            "group_id" => $expense->getGroup_id()->getId(),
+            "created_at" => $expense->getCreated_at()
+        ];
+        $query->execute($parameters);
+
+        $newExpenseId = (int)$this->db->lastInsertId();
+        foreach ($participantIds as $userId) {
+            // Appeler le Manager de liaison pour créer l'entrée
+            $expenseParticipantManager->create($newExpenseId, $userId); 
+        }
+
     }
 
 }

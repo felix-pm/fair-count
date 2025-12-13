@@ -5,23 +5,41 @@
 {% endblock %}
 
 {% block main %}
-    <li>
-        <a href="index.php?route=logout" class="">Se déconnecter</a>
-    </li>
-    <main class="py-5 container">
-    <input type="text" placeholder="Nom de la dépense">
-        <select name="" id="">
+
+{% if groupUsers is empty %}
+        <h1>ERREUR : LA LISTE GROUPUSER EST VIDE DANS TWIG</h1>
+    {% else %}
+        <h1>La liste contient {{ groupUsers|length }} utilisateurs.</h1>
+    {% endif %}
+
+    {{ dump(groupUsers) }} {# Cela devrait afficher le var_dump à l'écran #}
+
+{% if groupUsers is not empty %}
+        <p>Utilisateur 1 : {{ groupUsers[0].getFirstname() }} {{ groupUsers[0].getLastname() }}</p> 
+    {% endif %}
+    <a href="index.php?route=logout" class="">Se déconnecter</a> 
+    <form method="POST" action=""> 
+    <label for="expense" class="form-label">Intitulé de la dépense:</label>
+    <input type="text" name="expense_name">
+    <label for="expense_category" class="form-label">Catégorie de la dépense:</label>
+        <select name="category">
+        <option value="" selected disabled>Sélectionnez une catégorie de dépense</option>
             {% for category in categorys %}
                 <option value="{{category.label}}">{{category.label}}</option>
             {% endfor %} 
         </select>
-    <input type="number" placeholder="Montant de la dépense">
+    <label for="expense_category" class="form-label">Montant de la dépense:</label>
+    <input type="number" name="expense_amount">
     <label for="user-select">Qui a payé ?</label>
     <select name="user_id" id="user-select">
-        {% for user in users %}
-            <option value="{{ user.id }}">{{ user.firstname }}</option>
+    <option value="" selected disabled>sélectionner un nom</option>
+        {% for groupUser in groupUsers %}
+            <option value="{{ groupUser.getId() }}">{{ groupUser.getFirstname() }}</option>
         {% endfor %}
-    </select>
-    <h2>{{expenses.date}}</h2>
-    </main>
+    </select>   
+    <label for="date-saisie">Sélectionnez une date de dépense:</label>
+    <input type="date" id="date-saisie" name="expense_date">
+    </form>
+
+   
 {% endblock %}

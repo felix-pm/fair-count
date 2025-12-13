@@ -58,6 +58,7 @@ class Group_userManager extends AbstractManager
 
     public function findUsersByGroupId(int $groupId) : array
     {
+        try {
         // On sélectionne toutes les infos de l'utilisateur
         // en passant par la table de liaison group_users
         $query = $this->db->prepare('
@@ -89,6 +90,11 @@ class Group_userManager extends AbstractManager
 
         return $users;
     }
+    catch (\PDOException $e) {
+    
+    return []; 
+    }
+}
 
     // Dans managers/Group_userManager.php  
 
