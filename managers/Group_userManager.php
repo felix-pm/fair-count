@@ -17,10 +17,11 @@ class Group_userManager extends AbstractManager
         groups.created_at AS group_created_at,
 
         users.id AS user_id,
-        users.username AS user_username,
+        users.firstname AS user_firstname,
+        users.lastname AS user_lastname,
         users.email AS user_email,
-        users.password AS user_password,
-        users.created_at AS user_created_at,
+        users.password AS user_password,  
+        users.role AS user_role,      
 
         group_users.id AS group_user_id,
         group_users.user_id AS group_user_user_id,
@@ -35,22 +36,23 @@ class Group_userManager extends AbstractManager
         ];
 
         $query->execute($parameters);
-        $result = $query->fetchAll(PDO::FETCH_ASSOC);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
         $group_user = [];
-        foreach($result as $result)
+        foreach($results as $result)
         {
-            $group = new Group($result["group_id"], $result["group_name"], $result["group_creator_id"], $result["group_created_at"]);
+            $group = new Group($result["group_name"], $result["group_creator_id"], $result["group_created_at"], $result["group_id"]);
 
-            $user = new User($result["user_id"], $result["user_username"], $result["user_email"], $result["user_password"], $result["user_created_at"]);
+            $user = new User($result["user_email"], $result["user_password"],$result["user_firstname"], $result["user_lastname"], $result["user_role"], $result["user_id"]);
             
-            $group_user[] = new Group_user($result["group_user_id"], $group->getId(), $user->getId());
+            $group_user[] = new Group_user($group, $user, $result["group_user_id"]);
         }
 
         return $group_user;
 
     }
+   
 
     // Dans managers/Group_userManager.php
 
@@ -88,7 +90,7 @@ class Group_userManager extends AbstractManager
         return $users;
     }
 
-    // Dans managers/Group_userManager.php
+    // Dans managers/Group_userManager.php  
 
     public function findGroupsByUserId(int $userId) : array
     {
@@ -110,60 +112,46 @@ class Group_userManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $groups[] = new Group(
-                $item["id"], 
+            $groups[] = new Group(                 
                 $item["name"], 
                 $item["created_by"], 
-                $item["created_at"]
+                $item["created_at"],
+                $item["id"]
             );
         }
 
         return $groups;
     }
 
-    public function findGroupId(int $userId, int $Id) : array
+    public function create_groupe_user(int $userId, int $groupId): void
     {
-        $groupIds = $this->findGroupsByUserId($userId);
-        foreach ($groupIds as $groupId) 
-        {
-            if ($Id === $groupId['id']) {
-                return $groupId['id'];
-            }
-        }
+        
+        $query = $this->db->prepare('
+            INSERT INTO group_users (group_id, user_id) VALUES (:group_id, :user_id)            
+        ');
+
+        $parameters = [
+            "user_id" => $userId,
+            "group_id" => $groupId
+        ];
+
+        $query->execute($parameters);        
+       
     }
 
-    public function findGroupId(int $userId, int $groupId) : ?Group
-{
-    // On cherche le groupe MAIS on vérifie aussi que l'user_id correspond
-    $query = $this->db->prepare('
-        SELECT `groups`.* FROM `groups` 
-        JOIN group_users ON groups.id = group_users.group_id 
-        WHERE group_users.user_id = :user_id 
-        AND groups.id = :group_id
-    ');
+    public function delete_groupe_user(Group_user $group_user): void
+    {
+        $query = $this->db->prepare('
+            DELETE FROM group_users WHERE id=:id             
+        ');
 
-    $parameters = [
-        "user_id" => $userId,
-        "group_id" => $groupId
-    ];
+        $parameters = [
+            "id" => $group_user->getId()            
+        ];
 
-    $query->execute($parameters);
-    
-    // On utilise fetch() au lieu de fetchAll() car on ne veut qu'un seul résultat
-    $item = $query->fetch(PDO::FETCH_ASSOC);
-
-    // Si aucun résultat (l'utilisateur n'est pas dans ce groupe ou le groupe n'existe pas)
-    if (!$item) {
-        return null;
-    }
-
-    // On retourne l'objet Group unique
-    return new Group(
-        $item["id"], 
-        $item["name"], 
-        $item["created_by"], 
-        $item["created_at"]
-    );
-}
+        $query->execute($parameters);        
+       
+    }   
+   
 
 }

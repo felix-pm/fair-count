@@ -1,0 +1,55 @@
+{% extends "layout.html.twig" %}
+
+{% block header %}
+    {% include "partials/_header.html.twig" %}
+{% endblock %}
+
+{% block main %}
+
+<form method="post" action="">
+    <fieldset class="mb-3">
+        <label for="group" class="form-label">Nom du groupe</label>
+        <input type="texte" name="group" class="form-control">
+    </fieldset>
+     
+<label for="group" class="form-label">Nom des participants</label>
+    <select name="participant_1">
+    <option selected disabled >Sélectionner un participant</option>
+        {% for user in users %}
+            {% if user.getId() != current_user_id %}
+                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+            {% endif %}
+        {% endfor %}        
+    </select>
+
+    <select name="participant_2">
+    <option selected disabled >Sélectionner un participant</option>
+        {% for user in users %}
+            {% if user.getId() != current_user_id %}
+                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+            {% endif %}
+        {% endfor %}        
+    </select>
+    <select name="participant_3">
+    <option selected disabled >Sélectionner un participant</option>
+        {% for user in users %}
+            {% if user.getId() != current_user_id %}
+                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+            {% endif %}
+        {% endfor %}        
+    </select>
+    <select name="participant_4">
+    <option selected disabled >Sélectionner un participant</option>
+        {% for user in users %}
+            {% if user.getId() != current_user_id %}
+                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+            {% endif %}
+        {% endfor %}        
+    </select>
+
+    <fieldset>
+        <button type="submit" class="btn btn-primary">Créer le groupe</button>
+    </fieldset>
+    
+
+{% endblock %}

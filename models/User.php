@@ -31,19 +31,7 @@ class User
 
         return $this;
     }
-
-    public function getCreate_at()
-    {
-        return $this->create_at;
-    }
-
-    public function setCreate_at($create_at)
-    {
-        $this->create_at = $create_at;
-
-        return $this;
-    }
-
+    
     public function getfirstname()
     {
         return $this->firstname;

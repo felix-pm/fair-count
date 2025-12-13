@@ -48,7 +48,7 @@ class UserController extends AbstractController
             if(empty($errors))
             {
                 $new_user = new User($_POST["firstName"], $_POST["lastName"], $_POST["email"], $hashedPassword, $_POST["role"]);
-                $ctrl->create($new_user); //mettre dans le if empty(errors) avec le $new_user
+                $ctrl->create_user($new_user); //mettre dans le if empty(errors) avec le $new_user
                 $this->render('admin/users/create_user.html.twig', []);
             }
             else
@@ -147,32 +147,67 @@ class UserController extends AbstractController
         }
         else {
             $errors = [];
+            $ctrlUser = new UserManager;
+            $ctrlGroup = new GroupManager;
+            $ctrlGroupUser = new Group_userManager;
+            $allusers=$ctrlUser->findAll();
+            $currentUserId = $_SESSION['id'];
+
+            
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
-        {
-            if( (empty($_POST["name"])) || (empty($_POST["participant"]) )) {  
-                $errors[] = "veuillez remplir tout les champs !";
-            }
-            $ctrl = new GroupManager;
-            $verif_group = $ctrl->findByName($_POST["name"]); 
-            $datas = $ctrl->findAll();
+        {           
+
+            if( (empty($_POST["group"]))) {  
+                $errors[] = "veuillez remplir le nom du groupe !";
+            }            
+            
+            $verif_group = $ctrlGroup->findByName($_POST["group"]);
+                        
             if($verif_group != null)
             {
                 $errors[] = "Le groupe existe déjà";
             }
+
+            $participantsIds = [
+                $currentUserId, 
+                (int) ($_POST["participant_1"] ?? 0),
+                (int) ($_POST["participant_2"] ?? 0),
+                (int) ($_POST["participant_3"] ?? 0),
+                (int) ($_POST["participant_4"] ?? 0),
+                ];
+
+                $finalarrays=array_unique(array_filter($participantsIds));
             
             if(empty($errors))
-            {
-                $new_group = new Group($_POST["name"], $_POST["participants"], $_POST["date"]);
-                $ctrl->create_group($new_group); 
-                $this->render('member/create_group.html.twig', []);
-            }
-            else
-            {
-                $this->render('member/create_group.html.twig', ['errors' => $errors]);
-            }
+            {                
+                $currentDate = date('Y-m-d H:i:s');
+                $new_group = new Group($_POST["group"], $currentUserId , $currentDate);
+                $newGroupId=$ctrlGroup->createandgetId($new_group);
+
+                
+                
+                foreach ($finalarrays as $finalarray){
+
+                    if ((int)$finalarray > 0){
+
+
+                        $ctrlGroupUser->create_groupe_user((int)$finalarray,$newGroupId);  
+                
+                    }
+                }
+
+                $this->redirect('index.php?route=home');
+                return;
+            }            
             
         }
+
+        $this->render('member/create_group.html.twig', [
+                    'users' => $allusers,
+                    'errors' => $errors,
+                    'current_user_id' => $currentUserId
+                ]);       
         
         }
     }
@@ -188,7 +223,7 @@ class UserController extends AbstractController
             $datas = $ctrl->findById($_GET["id"]);
             if ($_SERVER['REQUEST_METHOD'] === 'POST')
             {
-                $update_user = new Group($datas->getId(), $_POST["name"], $_POST["participants"], $_POST["date"]);
+                $update_group = new Group($_POST["name"], $_POST["created_by"], $_POST["created_at"], $datas->getId());
                 $ctrl->update($update_group);
             }
             $this->render('member/update_group.html.twig', ['datas' => $datas]);
@@ -201,9 +236,16 @@ class UserController extends AbstractController
         {
             $this->redirect('index.php?route=list_admin');
         }
-        else
-        {
-            $this->redirect("index.php?route=list_admin"); //faire un chemin pour delete
+        else {
+
+            $ctrl = new GroupManager;
+            $datas = $ctrl->findById($_GET["id"]);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST')
+            {
+                $delete_group = new Group($_POST["name"], $_POST["created_by"], $_POST["created_at"], $datas->getId());
+                $ctrl->delete($delete_group);
+            }
+            $this->render('member/update_group.html.twig', ['datas' => $datas]);
         }
     }
 
@@ -233,25 +275,35 @@ class UserController extends AbstractController
         $groupUsers = $ctrlGroupUser->findUsersByGroupId($groupId);
 
         $ctrlExpense = new ExpenseManager;
-        $expenses = $ctrlExpense->findAll();
-
-        if (!isset($_SESSION['id'])) {
-            $this->redirect('index.php?route=login');
-        }
-        $userId = $_SESSION['id'];
-        $myGroups = $ctrlGroupUser->findGroupId($userId, $groupId);
+        $expenses = $ctrlExpense->findAll();        
 
         $this->render("member/expenses.html.twig", [
             "categorys" => $categorys,
             "users" => $groupUsers,
-            "expenses" => $expenses,
-            "groups" => $myGroups
+            "expenses" => $expenses            
         ]);
     }
 
     public function affichage_expenses() : void 
     {
-        $this->render("member/affichage_expenses.html.twig", []);
+        if (!isset($_GET['id'])) {
+            $this->redirect('index.php?route=home'); 
+        }
+        
+        $groupId = (int) $_GET['id'];
+
+        $ctrlCategory = new CategoryManager;
+        $categorys = $ctrlCategory->findAll();              
+
+        $ctrlExpense = new ExpenseManager;
+        $expenses = $ctrlExpense->findAll();        
+
+        $this->render("member/affichage_expenses.html.twig", [
+            "categorys" => $categorys,            
+            "expenses" => $expenses,
+            "groups" => $groupId
+        ]);
+        
     }
 
     public function home()
@@ -259,10 +311,17 @@ class UserController extends AbstractController
         if (!isset($_SESSION['id'])) {
             $this->redirect('index.php?route=login');
         }
+
         $userId = $_SESSION['id'];
+
         $manager = new Group_userManager();
         $myGroups = $manager->findGroupsByUserId($userId);
-        return $this->render('home/home.html.twig', ["groups" => $myGroups]);
+
+        
+
+        return $this->render('home/home.html.twig', [
+            "groups" => $myGroups            
+    ]);
     }
     
     public function reimbursement() : void 

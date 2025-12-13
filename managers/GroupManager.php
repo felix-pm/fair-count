@@ -19,7 +19,7 @@ class GroupManager extends AbstractManager
 
         foreach($result as $item)
         {
-            $group = new Group($item["id"], $item["name"], $item["created_by"], $item["created_at"]);
+            $group = new Group($item["name"], $item["created_by"], $item["created_at"], $item["id"]);
             $groups[] = $group;
         }
 
@@ -37,7 +37,7 @@ class GroupManager extends AbstractManager
 
         if($item)
         {
-            return new Group($item["id"], $item["name"], $item["created_by"], $item["created_at"]);
+            return new Group($item["name"], $item["created_by"], $item["created_at"], $item["id"]);
         }
 
         return null;
@@ -54,13 +54,13 @@ class GroupManager extends AbstractManager
 
         if($item)
         {
-            return new Group($item["id"], $item["name"], $item["created_by"], $item["created_at"]);
+            return new Group($item["name"], $item["created_by"], $item["created_at"], $item["id"]);
         }
 
         return null;
     }
 
-    public function create(Group $group) : void
+    public function createandgetId(Group $group) : ?int
     {
         $query = $this->db->prepare('INSERT INTO `groups` (name, created_by, created_at) VALUES (:name, :created_by, :created_at)');
         $parameters = [
@@ -69,6 +69,12 @@ class GroupManager extends AbstractManager
             "created_at" => $group->getCreated_at()
         ];
         $query->execute($parameters);
+
+        $newId = $this->db->lastInsertId();
+
+        return $newId;
+
+
     }
 
     public function update(Group $group) : void
