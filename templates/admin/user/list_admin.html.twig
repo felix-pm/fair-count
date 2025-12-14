@@ -1,1 +1,48 @@
-.
+{% extends "layout.html.twig" %}
+
+{% block header %}
+    {% include "partials/_header.html.twig" %}
+{% endblock %}
+
+{% block main %}
+    <main class="py-5 container">
+        <a href="index.php?route=logout" class="">Se déconnecter</a>
+        <h1 class="mb-3">Liste des utilisateurs</h1>
+        <a href="index.php?route=create_user" class="btn btn-primary">Créer un utilisateur</a>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        Prénom
+                    </th>
+                    <th>
+                        Nom
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in datas %}
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.firstName }}</td>
+                    <td>{{ data.lastName }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>
+                        <a href="index.php?route=update_user&id={{ data.id }}" class="btn btn-success"><span>Update</span></a>
+                        <a href="index.php?route=delete_user&id={{ data.id }}" class="btn btn-danger"><span></span>Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

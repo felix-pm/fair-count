@@ -4,7 +4,8 @@ class UserController extends AbstractController
 {
     
     // FONCTION POUR L'ADMIN
-    public function create_user() :void {
+    public function create_user() :void 
+    {
         if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
         {
             $this->redirect('index.php?route=login');
@@ -14,51 +15,37 @@ class UserController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
-            if( (empty($_POST["email"])) || (empty($_POST["password"]) )|| (empty($_POST["firstName"])) || (empty($_POST["lastName"] )) || (empty($_POST["confirmPassword"]) ) || (empty($_POST["role"]) ))
+            if (empty($_POST["firstname"]) || empty($_POST["lastname"]) || empty($_POST["email"]) || empty($_POST["password"]) || empty($_POST["confirmPassword"]))
             {  
-                $errors[] = "veuillez remplir tout les champs !";
+                $errors[] = "Veuillez remplir tous les champs !";
             }
-
-            //condition de lancement de l'erreur pour le if ci-dessous
-            $ctrl = new UserManager;
-            $verif_email = $ctrl->findByEmail($_POST["email"]);
-
-            //findAll qui permet d'aller récupérer le password dans le else ci-dessous
-            $datas = $ctrl->findAll();
-
-            //si l'utilisateur n'existe pas une erreur est lancé
-            if($verif_email != null)
+            $manager = new UserManager();
+            $userCandidat = $manager->findByEmail($_POST["email"]);
+            if ($userCandidat !== null)
             {
-                $errors[] = "L'utilisateur existe déjà";
+                $errors[] = "Cet email est déjà utilisé !";
             }
-            //si l'utilisateur existe il faut récupérer son password
-
-            
-            //si le password entré dans le formulaire correspond a celui de la base de donnée il n'y a pas d'erreur
-            if(($_POST["password"]) === ($_POST["confirmPassword"]))
-            {   
-                $hashedPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
-            }
-            else
+            if ($_POST["password"] !== $_POST["confirmPassword"])
             {
-                $errors[] = "Mot de passe incorrect";
+                $errors[] = "Les mots de passe ne correspondent pas !";
             }
-            
-            
-            if(empty($errors))
-            {
-                $new_user = new User($_POST["firstName"], $_POST["lastName"], $_POST["email"], $hashedPassword, $_POST["role"]);
-                $ctrl->create_user($new_user); //mettre dans le if empty(errors) avec le $new_user
-                $this->render('admin/users/create_user.html.twig', []);
+            if (empty($errors)) {
+                $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                
+                $userToCreate = new User(
+                    $_POST['email'],
+                    $hashedPassword,
+                    $_POST['firstname'],
+                    $_POST['lastname'],
+                    "USER"
+                );
+                $manager->create_user($userToCreate);
+                $this->redirect('index.php?route=list_admin');
+                exit;
             }
-            else
-            {
-                $this->render('admin/users/create_user.html.twig', ['errors' => $errors]);
-            }
-            
         }
-        
         }
+        $this->render('admin/user/create.html.twig', ['errors' => $errors]);
     }
 
     public function update_user() : void {
@@ -75,21 +62,32 @@ class UserController extends AbstractController
                 $update_user = new User($_POST["firstName"], $_POST["lastName"], $_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT), $_POST["role"], $datas->getId());
                 $ctrl->update($update_user);
             }
-            $this->render('admin/users/update_user.html.twig', ['datas' => $datas]);
+            $this->render('admin/user/update.html.twig', ['datas' => $datas]);
         }
     }
 
     public function delete_user() : void
+{
+    if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
     {
-        if (!isset($_SESSION['role']) || $_SESSION['role'] != 'ADMIN')
+        $this->redirect('index.php?route=login');
+        return; 
+    }
+
+    if (isset($_GET['id'])) 
+    {
+        $id = (int)$_GET['id'];
+        $manager = new UserManager();
+        $userToDelete = $manager->findById($id);
+
+        if ($userToDelete) 
         {
-            $this->redirect('index.php?route=login');
-        }
-        else
-        {
-            $this->redirect("index.php?route=list_admin");
+            $manager->delete($userToDelete);
         }
     }
+
+    $this->redirect('index.php?route=list_admin');
+}
 
     public function list_admin() : void //montre la liste des user de toute l'appli
     {
@@ -101,7 +99,7 @@ class UserController extends AbstractController
         {
             $ctrl = new UserManager;
             $datas = $ctrl->findAll();
-            $this->render('admin/users/list_admin.html.twig', ['datas' => $datas]);
+            $this->render('admin/user/list_admin.html.twig', ['datas' => $datas]);
         }
     }
 
@@ -116,7 +114,7 @@ class UserController extends AbstractController
             $id = $_GET["id"];
             $ctrl = new UserManager;
             $datas = $ctrl->findById($id);
-            $this->render('admin/users/show.html.twig', ["datas" => $datas]);
+            $this->render('admin/user/show.html.twig', ["datas" => $datas]);
         }
 
     }
@@ -369,7 +367,7 @@ class UserController extends AbstractController
 
 
 
-    
+
     
     public function reimbursement() : void 
     {
