@@ -275,7 +275,7 @@ class UserController extends AbstractController
         $ctrlUser = new UserManager;
         $ctrlGroup = new GroupManager; 
         $categorys = $ctrlCategory->findAll();        
-        $groupUsers = $ctrlGroupUser->findUsersByGroupId($groupId);
+        $groupUsers = $ctrlGroupUser->findUsersByGroupId($groupId); //va cherche tous les user affilié au groupes
 
         
         
@@ -285,7 +285,7 @@ class UserController extends AbstractController
                 $errors[] = "Veuillez remplir tous les champs !";
             } 
 
-            if(empty($errors)){
+            if(!isset($error)){
                
                 $user = $ctrlUser->findById($_POST["user_id"]);
                 $category = $ctrlCategory->findByName($_POST["category"]);
@@ -303,10 +303,11 @@ class UserController extends AbstractController
                 $Expense = new Expense($_POST["expense_name"], $_POST["expense_amount"], $_POST["expense_date"],$user,$category,$group,$currentDate);
                 $ctrlExpense->create_expense($Expense,$participantIds);
 
-                $this->redirect('index.php?route=affichage_expense');
+                $this->redirect("index.php?route=affichage_expenses&id=$groupId", []);
                 return;
         
             }
+            $this->render("index.php?route=expenses&id=$groupId", [$error]);
         }
         
         
@@ -314,7 +315,7 @@ class UserController extends AbstractController
 
         $this->render("member/expenses.html.twig", [
             "categorys" => $categorys,            
-            "group_users" => $groupUsers            
+            "groupUsers" => $groupUsers            
         ]);
         }
         }
@@ -360,6 +361,15 @@ class UserController extends AbstractController
             "groups" => $myGroups            
     ]);
     }
+
+
+
+
+
+
+
+
+    
     
     public function reimbursement() : void 
     {
@@ -395,4 +405,34 @@ class UserController extends AbstractController
             "group_id" => $groupId
         ]);
     }
+
+public function validate_reimbursement() : void
+{
+    // 1. On vérifie que le formulaire a bien envoyé des données (POST)
+    if (isset($_POST['from_id'], $_POST['to_id'], $_POST['amount'], $_POST['group_id'])) {
+        
+        // 2. On récupère et nettoie les données
+        $fromId = (int) $_POST['from_id'];
+        $toId = (int) $_POST['to_id'];
+        $amount = (float) $_POST['amount'];
+        $groupId = (int) $_POST['group_id'];
+
+        // 3. On appelle le Manager pour insérer le remboursement en BDD
+        $rm = new ReimbursementManager();
+        
+        // Tu dois t'assurer d'avoir créé cette méthode 'createReimbursement' 
+        // dans ton Manager (comme vu juste avant)
+        $rm->createReimbursement($fromId, $toId, $amount, $groupId);
+
+        // 4. C'est fini ! On redirige l'utilisateur vers la page d'affichage.
+        // L'utilisateur verra la liste mise à jour.
+        $this->redirect("index.php?route=reimbursement&id=" . $groupId);
+    
+    } else {
+        // Si quelqu'un essaie de lancer cette fonction sans formulaire
+        $this->redirect('index.php?route=home');
+    }
+}
+
+    
 }

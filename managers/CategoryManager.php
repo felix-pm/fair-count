@@ -26,7 +26,7 @@ class CategoryManager extends AbstractManager
         return $categorys;
     }
 
-    public function findByName(int $label) : Category
+    public function findByName(string $label) : Category
     {
         $query = $this->db->prepare('SELECT * FROM categories WHERE label = :label');
         $parameters = [

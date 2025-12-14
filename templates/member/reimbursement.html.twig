@@ -4,7 +4,6 @@
     {% include "partials/_header.html.twig" %}
 {% endblock %}
 
-{% extends "layout.html.twig" %}
 
 {% block title %}Remboursements{% endblock %}
 
@@ -31,23 +30,38 @@
             <p>Voici les virements optimisés pour rembourser tout le monde :</p>
             
             <ul class="transaction-list">
-                {% for transaction in plan %}
-                    <li class="transaction-card">
-                        <div class="debtor">
-                            <strong>{{ transaction.from }}</strong>
-                        </div>
-                        
-                        <div class="amount-arrow">
-                            <span class="amount">{{ transaction.amount }} €</span>
-                            <span class="arrow">&rarr;</span>
-                            <small>doit payer à</small>
-                        </div>
+                <ul class="transaction-list">
+    {% for transaction in plan %}
+        <li class="transaction-card">
+            <div class="debtor">
+                <strong>{{ transaction.from }}</strong>
+            </div>
+            
+            <div class="amount-arrow">
+                <span class="amount">{{ transaction.amount }} €</span>
+                <span class="arrow">&rarr;</span>
+                <small>doit payer à</small>
+            </div>
 
-                        <div class="creditor">
-                            <strong>{{ transaction.to }}</strong>
-                        </div>
-                    </li>
-                {% endfor %}
+            <div class="creditor">
+                <strong>{{ transaction.to }}</strong>
+            </div>
+
+            <div class="action">
+                <form action="index.php?route=validate_reimbursement" method="POST">
+                    <input type="hidden" name="from_id" value="{{ transaction.from_id }}">
+                    <input type="hidden" name="to_id" value="{{ transaction.to_id }}">
+                    <input type="hidden" name="amount" value="{{ transaction.amount }}">
+                    <input type="hidden" name="group_id" value="{{ group_id }}">
+                    
+                    <button type="submit" class="btn-pay">
+                        ✅ Marquer comme payé
+                    </button>
+                </form>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
             </ul>
         {% endif %}
     </div>

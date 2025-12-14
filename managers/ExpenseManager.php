@@ -90,8 +90,8 @@ class ExpenseManager extends AbstractManager
     {
         $expenseParticipantManager = new Expense_participantManager();
         $query = $this->db->prepare(
-        'INSERT INTO expense (title, amount, date, user_id, category_id, group_id, created_at) 
-        VALUES (:title, :amount, :date, :user_id, :category.id, :group_id, :created_at)');
+        'INSERT INTO expenses (title, amount, date, user_id, category_id, group_id, created_at) 
+        VALUES (:title, :amount, :date, :user_id, :category_id, :group_id, :created_at)');
         $parameters = [
             "title" => $expense->getTitle(),
             "amount" => $expense->getAmount(),

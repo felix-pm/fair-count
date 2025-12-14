@@ -2,11 +2,11 @@
 
 class ReimbursementManager extends AbstractManager
 {
-    private $pdo;
+    // private $pdo;
 
     public function __construct()
     {
-
+        parent::__construct();
     }
 
 
@@ -30,7 +30,7 @@ class ReimbursementManager extends AbstractManager
 
         // --- ÉTAPE A : Initialiser tous les membres du groupe à 0 ---
         $sqlMembers = "SELECT user_id FROM group_users WHERE group_id = :groupId";
-        $stmtMembers = $this->pdo->prepare($sqlMembers);
+        $stmtMembers = $this->db->prepare($sqlMembers);
         $stmtMembers->execute(['groupId' => $groupId]);
         $members = $stmtMembers->fetchAll(PDO::FETCH_COLUMN);
 
@@ -41,7 +41,7 @@ class ReimbursementManager extends AbstractManager
         // --- ÉTAPE B : Traiter les DÉPENSES (Expenses) ---
         // On récupère toutes les dépenses du groupe
         $sqlExpenses = "SELECT id, amount, user_id as payer_id FROM expenses WHERE group_id = :groupId";
-        $stmtExpenses = $this->pdo->prepare($sqlExpenses);
+        $stmtExpenses = $this->db->prepare($sqlExpenses);
         $stmtExpenses->execute(['groupId' => $groupId]);
         $expenses = $stmtExpenses->fetchAll(PDO::FETCH_ASSOC);
 
@@ -58,7 +58,7 @@ class ReimbursementManager extends AbstractManager
             // 2. On cherche les participants pour cette dépense spécifique
             // (Ceux qui doivent rembourser une part)
             $sqlParticipants = "SELECT user_id FROM expense_participants WHERE expense_id = :expenseId";
-            $stmtPart = $this->pdo->prepare($sqlParticipants);
+            $stmtPart = $this->db->prepare($sqlParticipants);
             $stmtPart->execute(['expenseId' => $expenseId]);
             $participants = $stmtPart->fetchAll(PDO::FETCH_COLUMN);
 
@@ -79,7 +79,7 @@ class ReimbursementManager extends AbstractManager
         // --- ÉTAPE C : Traiter les REMBOURSEMENTS DÉJÀ EFFECTUÉS ---
         // Si Pierre a déjà rendu 10€ à Félix, il faut le prendre en compte.
         $sqlReimbursements = "SELECT amount, from_user_id, to_user_id FROM reimbursements WHERE group_id = :groupId";
-        $stmtReimb = $this->pdo->prepare($sqlReimbursements);
+        $stmtReimb = $this->db->prepare($sqlReimbursements);
         $stmtReimb->execute(['groupId' => $groupId]);
         $existingReimbursements = $stmtReimb->fetchAll(PDO::FETCH_ASSOC);
 
@@ -168,10 +168,29 @@ class ReimbursementManager extends AbstractManager
     // Petite fonction utilitaire pour récupérer le prénom (optionnel mais plus joli)
     private function getUserName(int $userId): string
     {
-        $stmt = $this->pdo->prepare("SELECT firstname FROM users WHERE id = ?");
+        $stmt = $this->db->prepare("SELECT firstname FROM users WHERE id = ?");
         $stmt->execute([$userId]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         return $user ? $user['firstname'] : "User #$userId";
     }
+
+    // Dans ReimbursementManager.php
+
+public function createReimbursement(int $fromUserId, int $toUserId, float $amount, int $groupId): void
+{
+    // On enregistre le fait que "Pierre" a donné de l'argent à "Paul"
+    $sql = "INSERT INTO reimbursements (from_user_id, to_user_id, amount, group_id, date, created_at) 
+            VALUES (:from, :to, :amount, :group_id, NOW(), NOW())";
+    
+    $stmt = $this->db->prepare($sql);
+    
+    $stmt->execute([
+        'from' => $fromUserId,
+        'to' => $toUserId,
+        'amount' => $amount,
+        'group_id' => $groupId
+    ]);
 }
+}
+
 ?>

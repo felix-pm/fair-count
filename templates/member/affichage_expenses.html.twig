@@ -6,6 +6,7 @@
 
 {% block main %}
 
+<a href="index.php?route=reimbursement&id={{groups}}" class="">Régler les remboursements</a> 
 
 {% for expense in expenses %}
     {% if expense.group_id.id == groups %}

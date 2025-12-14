@@ -6,13 +6,23 @@
 
 {% block main %}
 
+        {% if errors is defined and errors is not empty %}
+            <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
 {% if groupUsers is empty %}
         <h1>ERREUR : LA LISTE GROUPUSER EST VIDE DANS TWIG</h1>
     {% else %}
         <h1>La liste contient {{ groupUsers|length }} utilisateurs.</h1>
     {% endif %}
 
-    {{ dump(groupUsers) }} {# Cela devrait afficher le var_dump à l'écran #}
+    {# {{ dump(groupUsers) }} #}
 
 {% if groupUsers is not empty %}
         <p>Utilisateur 1 : {{ groupUsers[0].getFirstname() }} {{ groupUsers[0].getLastname() }}</p> 
@@ -39,6 +49,9 @@
     </select>   
     <label for="date-saisie">Sélectionnez une date de dépense:</label>
     <input type="date" id="date-saisie" name="expense_date">
+    <fieldset>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
     </form>
 
    

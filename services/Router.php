@@ -58,6 +58,9 @@ class Router
             else if($_GET['route'] === 'reimbursement') {
                 $this->uc->reimbursement();
             }
+            else if($_GET['route'] === 'validate_reimbursement') {
+                $this->uc->validate_reimbursement();
+            }
             else if($_GET['route'] === 'affichage_expenses') {
                 $this->uc->affichage_expenses();
             }
