@@ -17,6 +17,7 @@ class AuthController extends AbstractController
                 if (empty($_POST["email"]) || empty($_POST["password"])) {
                     $errors[] = "Veuillez remplir tous les champs !";
                 }
+
                 if (empty($errors)) {
                     $manager = new UserManager();
                     $user = $manager->findByEmail($_POST["email"]);
@@ -28,7 +29,14 @@ class AuthController extends AbstractController
                             $_SESSION['lastname'] = $user->getLastName();
                             $_SESSION['email'] = $user->getEmail();
                             $_SESSION['role'] = $user->getRole();
-                            $this->redirect("index.php?route=home");
+                            if($user->getRole() === 'ADMIN')
+                            {
+                                $this->redirect("index.php?route=list_admin");
+                            }
+                            else 
+                            {
+                                $this->redirect("index.php?route=home");
+                            }
                             exit;
                         } else {
                             $errors[] = "Identifiants incorrects (mot de passe).";
