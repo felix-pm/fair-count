@@ -6,53 +6,49 @@
 
 {% block main %}
 
-        {% if errors is defined and errors is not empty %}
-            <div class="alert alert-danger">
-            <ul>
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+    <a href="index.php?route=affichage_expenses&id={{groups}}" class="btn-secondary">&larr; Retour</a>
 
-{% if groupUsers is empty %}
-        <h1>ERREUR : LA LISTE GROUPUSER EST VIDE DANS TWIG</h1>
-    {% else %}
-        <h1>La liste contient {{ groupUsers|length }} utilisateurs.</h1>
+    {% if errors is defined and errors is not empty %}
+        <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
 
-    {# {{ dump(groupUsers) }} #}
+    <h1 style="text-align:center;">Ajouter une dépense</h1>
 
-{% if groupUsers is not empty %}
-        <p>Utilisateur 1 : {{ groupUsers[0].getFirstname() }} {{ groupUsers[0].getLastname() }}</p> 
-    {% endif %}
-    <a href="index.php?route=logout" class="">Se déconnecter</a> 
     <form method="POST" action=""> 
-    <label for="expense" class="form-label">Intitulé de la dépense:</label>
-    <input type="text" name="expense_name">
-    <label for="expense_category" class="form-label">Catégorie de la dépense:</label>
+        <label for="expense" class="form-label">Intitulé de la dépense:</label>
+        <input type="text" name="expense_name" required placeholder="Ex: Courses">
+        
+        <label for="expense_category" class="form-label">Catégorie:</label>
         <select name="category">
-        <option value="" selected disabled>Sélectionnez une catégorie de dépense</option>
+            <option value="" selected disabled>Sélectionnez une catégorie</option>
             {% for category in categorys %}
                 <option value="{{category.label}}">{{category.label}}</option>
             {% endfor %} 
         </select>
-    <label for="expense_category" class="form-label">Montant de la dépense:</label>
-    <input type="number" name="expense_amount">
-    <label for="user-select">Qui a payé ?</label>
-    <select name="user_id" id="user-select">
-    <option value="" selected disabled>sélectionner un nom</option>
-        {% for groupUser in groupUsers %}
-            <option value="{{ groupUser.getId() }}">{{ groupUser.getFirstname() }}</option>
-        {% endfor %}
-    </select>   
-    <label for="date-saisie">Sélectionnez une date de dépense:</label>
-    <input type="date" id="date-saisie" name="expense_date">
-    <fieldset>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </fieldset>
+        
+        <label for="expense_amount" class="form-label">Montant (€):</label>
+        <input type="number" step="0.01" name="expense_amount" required placeholder="0.00">
+        
+        <label for="user-select">Qui a payé ?</label>
+        <select name="user_id" id="user-select" required>
+            <option value="" selected disabled>Sélectionner un nom</option>
+            {% for groupUser in groupUsers %}
+                <option value="{{ groupUser.getId() }}">{{ groupUser.getFirstname() }}</option>
+            {% endfor %}
+        </select>   
+        
+        <label for="date-saisie">Date:</label>
+        <input type="date" id="date-saisie" name="expense_date" required>
+        
+        <fieldset>
+            <button type="submit" class="btn btn-primary">Valider</button>
+        </fieldset>
     </form>
 
-   
 {% endblock %}

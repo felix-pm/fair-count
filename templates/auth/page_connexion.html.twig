@@ -1,16 +1,15 @@
 {% extends "layout.html.twig" %}
 
-{% block header %}
-    {% include "partials/_header.html.twig" %}
-{% endblock %}
-
 {% block title %}Bienvenue{% endblock %}
 
 {% block main %}
-    <div>
-        <h1>Bienvenue sur mon site</h1>
-        <p>Merci de sélectionner une action :</p>
-        <a href="?route=login"> Se connecter </a>
-        <a href="?route=register"> S'inscrire </a>
+    <div class="welcome-container">
+        <h1>Bienvenue sur Fair count</h1>
+        <p>Gérez vos comptes entre amis simplement.</p>
+        
+        <div style="margin-top: 40px;">
+            <a href="?route=login">Se connecter</a>
+            <a href="?route=register">Créer un compte</a>
+        </div>
     </div>
-{% endblock %}  
+{% endblock %}

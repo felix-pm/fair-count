@@ -6,43 +6,48 @@
 
 {% block main %}
 
+<h2 style="text-align:center;">Créer un groupe</h2>
+
 <form method="post" action="">
     <fieldset class="mb-3">
         <label for="group" class="form-label">Nom du groupe</label>
-        <input type="texte" name="group" class="form-control">
+        <input type="text" name="group" class="form-control" required>
     </fieldset>
      
-<label for="group" class="form-label">Nom des participants</label>
+    <label class="form-label">Inviter des participants</label>
+    
     <select name="participant_1">
-    <option selected disabled >Sélectionner un participant</option>
+        <option selected disabled>Participant 1</option>
         {% for user in users %}
             {% if user.getId() != current_user_id %}
-                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+                <option value="{{user.getId()}}">{{user.getfirstname()}}</option> 
             {% endif %}
         {% endfor %}        
     </select>
 
     <select name="participant_2">
-    <option selected disabled >Sélectionner un participant</option>
+        <option selected disabled>Participant 2</option>
         {% for user in users %}
             {% if user.getId() != current_user_id %}
-                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+                <option value="{{user.getId()}}">{{user.getfirstname()}}</option> 
             {% endif %}
         {% endfor %}        
     </select>
+
     <select name="participant_3">
-    <option selected disabled >Sélectionner un participant</option>
+        <option selected disabled>Participant 3</option>
         {% for user in users %}
             {% if user.getId() != current_user_id %}
-                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+                <option value="{{user.getId()}}">{{user.getfirstname()}}</option> 
             {% endif %}
         {% endfor %}        
     </select>
+
     <select name="participant_4">
-    <option selected disabled >Sélectionner un participant</option>
+        <option selected disabled>Participant 4</option>
         {% for user in users %}
             {% if user.getId() != current_user_id %}
-                <option value="{{user.getId()}}" >{{user.getfirstname()}}</option> 
+                <option value="{{user.getId()}}">{{user.getfirstname()}}</option> 
             {% endif %}
         {% endfor %}        
     </select>
@@ -50,6 +55,6 @@
     <fieldset>
         <button type="submit" class="btn btn-primary">Créer le groupe</button>
     </fieldset>
-    
+</form>
 
 {% endblock %}

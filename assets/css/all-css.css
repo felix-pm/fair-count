@@ -1,0 +1,341 @@
+/* ============================================================
+   0. CONFIGURATION GLOBALE & LAYOUT (S'applique à tout)
+   ============================================================ */
+:root {
+    --dark-blue: #0f2b46;
+    --cyan: #40c4ff;
+    --soft-pink: #ffd1d1;
+    --soft-yellow: #ffe66d;
+    --bg-grey: #f4f7f6;
+    --white: #ffffff;
+    --text-grey: #6c757d;
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-grey);
+    color: var(--dark-blue);
+    margin: 0;
+    padding: 0;
+    /* Fond avec formes "Blobs" */
+    background-image: 
+        radial-gradient(circle at 10% 20%, var(--soft-pink) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, var(--soft-yellow) 0%, transparent 25%),
+        radial-gradient(circle at 50% 50%, rgba(64, 196, 255, 0.1) 0%, transparent 40%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Conteneur Principal "Fenêtre Bureau" */
+.main-wrapper {
+    width: 1100px;
+    min-height: 700px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 40px auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Elements communs (boutons, liens, formulaires) */
+a { text-decoration: none; color: inherit; transition: 0.2s; }
+ul { list-style: none; padding: 0; }
+
+.btn-primary, button[type="submit"] {
+    background-color: var(--cyan);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    display: inline-block;
+    transition: 0.3s;
+}
+.btn-primary:hover, button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(64,196,255,0.4);
+}
+
+.alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+.alert-danger { background: #ffe6e6; color: #d63031; border: 1px solid #fab1a0; }
+.alert-success { background: #e6fffa; color: #00b894; border: 1px solid #55efc4; }
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fdfdfd;
+    box-sizing: border-box;
+}
+label { font-weight: 600; font-size: 0.9rem; color: var(--dark-blue); }
+
+
+/* ============================================================
+   1. PAGE : CONNEXION & BIENVENUE (page_connexion.html.twig)
+   ============================================================ */
+/* Cible le div principal de la page de bienvenue */
+.welcome-container {
+    text-align: center;
+    padding: 100px 20px;
+}
+.welcome-container h1 { font-size: 3rem; margin-bottom: 20px; }
+.welcome-container p { font-size: 1.2rem; color: var(--text-grey); margin-bottom: 40px; }
+.welcome-container a {
+    margin: 0 10px;
+    padding: 15px 40px;
+    background: var(--dark-blue);
+    color: white;
+    border-radius: 30px;
+    font-weight: 600;
+}
+.welcome-container a:last-child {
+    background: var(--white);
+    color: var(--dark-blue);
+    border: 2px solid var(--dark-blue);
+}
+
+
+/* ============================================================
+   2. PAGES : LOGIN & REGISTER (login.html.twig / register)
+   ============================================================ */
+.auth-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 40px;
+    text-align: center;
+}
+.auth-container h1 { font-size: 2.2rem; margin-bottom: 30px; }
+.auth-container form { text-align: left; }
+.auth-container fieldset { border: none; padding: 0; margin: 0; }
+.auth-links { 
+    display: block; 
+    margin-top: 20px; 
+    color: var(--cyan); 
+    font-weight: 600; 
+}
+
+
+/* ============================================================
+   3. PAGE : HOME / LISTE GROUPES (home.html.twig)
+   ============================================================ */
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 50px;
+}
+.group-card {
+    background: var(--white);
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 120px;
+}
+.group-card:hover { border-color: var(--cyan); transform: translateY(-5px); }
+
+/* Bouton spécial "Ajouter un groupe" */
+a[href*="create_group"].group-card {
+    border: 2px dashed var(--cyan);
+    color: var(--cyan);
+    background: transparent;
+}
+
+
+/* ============================================================
+   4. PAGE : CREATE GROUP (create_group.html.twig)
+   ============================================================ */
+.form-card {
+    max-width: 600px;
+    margin: 40px auto;
+    background: var(--white);
+    padding: 0 20px; /* Le padding interne est géré par le wrapper */
+}
+.form-card h2 { text-align: center; margin-bottom: 30px; }
+
+
+/* ============================================================
+   PAGE : AFFICHAGE EXPENSES (Le Dashboard)
+   ============================================================ */
+
+/* 1. Le conteneur principal de la liste (La carte blanche au milieu) */
+.expense-list-container {
+    background-color: var(--white);
+    max-width: 700px; /* On limite la largeur pour que ça fasse "App" */
+    margin: 0 auto;   /* On centre le bloc horizontalement */
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05); /* Jolie ombre douce */
+    padding: 0; /* Le padding sera géré par les items */
+    overflow: hidden; /* Pour que les coins ronds coupent bien le contenu */
+}
+
+/* 2. Chaque ligne de dépense */
+.expense-item {
+    display: flex;
+    justify-content: space-between; /* Écarte les éléments (Date à gauche, Prix à droite) */
+    align-items: center;
+    padding: 20px 25px; /* Espace intérieur confortable */
+    border-bottom: 1px solid #f0f0f0; /* Ligne de séparation grise très claire */
+    transition: background 0.2s;
+}
+
+.expense-item:hover {
+    background-color: #fafafa; /* Petit effet au survol */
+}
+
+/* 3. Stylisation du texte à l'intérieur des lignes */
+/* Date */
+.expense-item p:nth-child(1) {
+    color: var(--cyan);
+    font-weight: bold;
+    width: 60px; /* Largeur fixe pour aligner verticalement */
+    margin: 0;
+}
+
+/* Titre de la dépense */
+.expense-item p:nth-child(2) {
+    flex: 1; /* Prend toute la place disponible au milieu */
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--dark-blue);
+    margin: 0;
+    text-align: left;
+    padding-left: 15px;
+}
+
+/* Montant */
+.expense-item p:nth-child(3) {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+    margin: 0 20px 0 0;
+}
+
+/* Auteur ("Par Félix") */
+.expense-item p:nth-child(4) {
+    font-size: 0.8rem;
+    color: #999;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin: 0;
+    white-space: nowrap; /* Empêche le texte de passer à la ligne */
+}
+
+/* 4. Gestion des boutons autour */
+h2 {
+    color: var(--dark-blue);
+    margin-bottom: 25px;
+}
+
+/* Alignement des boutons flottants */
+.btn-primary {
+    box-shadow: 0 4px 10px rgba(64, 196, 255, 0.3);
+}
+
+
+/* ============================================================
+   6. PAGE : AJOUT DEPENSE (expenses.html.twig)
+   ============================================================ */
+.add-expense-container {
+    max-width: 500px;
+    margin: 40px auto;
+}
+.add-expense-container h1 { text-align: center; font-size: 1.5rem; margin-bottom: 30px; }
+.add-expense-container label { margin-top: 15px; display: block; }
+
+
+/* ============================================================
+   7. PAGE : REMBOURSEMENT (reimbursement.html.twig)
+   ============================================================ */
+.reimbursement-container { padding: 40px; text-align: center; }
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+.transaction-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+}
+.amount-arrow { 
+    display: flex; flex-direction: column; align-items: center; 
+    color: var(--cyan); margin: 0 20px; 
+}
+.arrow { font-size: 2rem; line-height: 1; }
+.amount { font-weight: bold; font-size: 1.2rem; color: var(--dark-blue); }
+
+.btn-pay {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 8px 15px;
+    font-size: 0.8rem;
+}
+.btn-pay:hover { background: var(--cyan); color: white; }
+
+
+/* ============================================================
+   8. PAGE : PROFILE (profile.html.twig)
+   ============================================================ */
+.profile-card {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    padding: 40px;
+    border: 1px solid #eee;
+    border-radius: 16px;
+}
+.profile-avatar {
+    width: 100px; height: 100px;
+    background: var(--bg-grey);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+
+/* ============================================================
+   9. PAGE : 404 NOT FOUND (notFound.html.twig)
+   ============================================================ */
+.error-page {
+    text-align: center;
+    padding: 100px 20px;
+    color: var(--text-grey);
+}
+.error-page h1 { font-size: 4rem; margin: 0; color: var(--soft-pink); }
+.error-page p { font-size: 1.5rem; }

@@ -5,10 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Fair-Count | L'appli du rat</title>
         <link rel="icon" type="image/png" href="assets/img/favicon-faircount.png">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/all-css.css">
     <body>
+        <div class="main-wrapper">
+        
         {% block header %}
+            {% include "partials/_header.html.twig" %}
         {% endblock %}
-        {% block main %}
-        {% endblock %}
+
+        <main style="padding: 20px; flex: 1; overflow-y: auto;">
+            {% block main %}{% endblock %}
+        </main>
+        
+    </div>
     </body>
 </html>

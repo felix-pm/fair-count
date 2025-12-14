@@ -4,64 +4,60 @@
     {% include "partials/_header.html.twig" %}
 {% endblock %}
 
-
 {% block title %}Remboursements{% endblock %}
 
 {% block main %}
-<div class="container-reimbursement">
-    <h2>⚖️ Équilibre des comptes</h2>
+<div class="reimbursement-container">
     
-    <div class="actions">
-        {# Lien de retour vers les dépenses du groupe #}
-        <a href="index.php?route=expenses&id={{ group_id }}" class="btn-secondary">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+        <h2>⚖️ Équilibre</h2>
+        <a href="index.php?route=affichage_expenses&id={{ group_id }}" class="btn-secondary" style="background:#eee; padding: 8px 15px; border-radius: 20px; color: #555; font-weight: 600;">
             &larr; Retour aux dépenses
         </a>
     </div>
 
-    <hr>
+    <hr style="border:0; border-top:1px solid #eee; margin-bottom: 30px;">
 
     <div class="reimbursement-list">
         {% if plan is empty %}
-            <div class="alert-success">
-                <h3>🎉 Tout est équilibré !</h3>
+            <div class="alert-success" style="text-align:center; padding:20px; border-radius:10px;">
+                <h3 style="margin:0;">🎉 Tout est équilibré !</h3>
                 <p>Personne ne doit rien à personne dans ce groupe.</p>
             </div>
         {% else %}
-            <p>Voici les virements optimisés pour rembourser tout le monde :</p>
+            <p style="text-align:center; color:#666; margin-bottom:20px;">Voici les virements optimisés pour rembourser tout le monde :</p>
             
             <ul class="transaction-list">
-                <ul class="transaction-list">
-    {% for transaction in plan %}
-        <li class="transaction-card">
-            <div class="debtor">
-                <strong>{{ transaction.from }}</strong>
-            </div>
-            
-            <div class="amount-arrow">
-                <span class="amount">{{ transaction.amount }} €</span>
-                <span class="arrow">&rarr;</span>
-                <small>doit payer à</small>
-            </div>
+                {% for transaction in plan %}
+                    <li class="transaction-card">
+                        <div class="debtor">
+                            <strong>{{ transaction.from }}</strong>
+                        </div>
+                        
+                        <div class="amount-arrow">
+                            <span class="amount">{{ transaction.amount }} €</span>
+                            <span class="arrow">&rarr;</span>
+                            <small>doit payer à</small>
+                        </div>
 
-            <div class="creditor">
-                <strong>{{ transaction.to }}</strong>
-            </div>
+                        <div class="creditor">
+                            <strong>{{ transaction.to }}</strong>
+                        </div>
 
-            <div class="action">
-                <form action="index.php?route=validate_reimbursement" method="POST">
-                    <input type="hidden" name="from_id" value="{{ transaction.from_id }}">
-                    <input type="hidden" name="to_id" value="{{ transaction.to_id }}">
-                    <input type="hidden" name="amount" value="{{ transaction.amount }}">
-                    <input type="hidden" name="group_id" value="{{ group_id }}">
-                    
-                    <button type="submit" class="btn-pay">
-                        ✅ Marquer comme payé
-                    </button>
-                </form>
-            </div>
-        </li>
-    {% endfor %}
-</ul>
+                        <div class="action">
+                            <form action="index.php?route=validate_reimbursement" method="POST">
+                                <input type="hidden" name="from_id" value="{{ transaction.from_id }}">
+                                <input type="hidden" name="to_id" value="{{ transaction.to_id }}">
+                                <input type="hidden" name="amount" value="{{ transaction.amount }}">
+                                <input type="hidden" name="group_id" value="{{ group_id }}">
+                                
+                                <button type="submit" class="btn-pay">
+                                    ✅ Réglé
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
         {% endif %}
     </div>

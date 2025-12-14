@@ -6,17 +6,42 @@
 
 {% block main %}
 
-<a href="index.php?route=reimbursement&id={{groups}}" class="">Régler les remboursements</a> 
+    <div style="margin-bottom: 10px;">
+        <a href="index.php?route=home" class="btn-secondary" style="background:#eee; padding: 8px 15px; border-radius: 20px; color: #555; text-decoration:none; font-weight:600; font-size:0.9rem;">
+            &larr; Mes groupes
+        </a>
+    </div>
 
-{% for expense in expenses %}
-    {% if expense.group_id.id == groups %}
-        <p>{{expense.date}}</p>
-        <p>{{expense.title}}</p>
-        <p>{{expense.amount}}</p>
-        <p>Payé par:{{expense.user_id.firstname}}</p>
-    {% endif %}
-{% endfor %}
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h2 style="margin-top: 0;">Dépenses du groupe</h2>
+        <a href="index.php?route=reimbursement&id={{groups}}" class="btn-primary" style="background-color: #fff; color: var(--cyan); border: 2px solid var(--cyan);">
+            ⚖️ Voir l'équilibre des comptes
+        </a> 
+    </div>
 
-<a href="?route=expenses&id={{groups}}">Ajouter une dépense</a>
+    <div class="expense-list-container">
+        {% if expenses is empty %}
+            <div style="padding: 40px; text-align: center; color: #999;">
+                Aucune dépense pour le moment.
+            </div>
+        {% else %}
+            {% for expense in expenses %}
+                {% if expense.group_id.id == groups %}
+                    <div class="expense-item">
+                        <p>{{expense.date|date("d/m")}}</p>
+                        <p>{{expense.title}}</p>
+                        <p>{{expense.amount}} €</p>
+                        <p>Par {{expense.user_id.firstname}}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div style="text-align:center; margin-top: 30px;">
+        <a href="?route=expenses&id={{groups}}" class="btn-primary">
+            + Ajouter une dépense
+        </a>
+    </div>
 
 {% endblock %}

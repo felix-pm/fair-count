@@ -1,11 +1,9 @@
 {% extends "layout.html.twig" %}
 
-{% block header %}
-    {% include "partials/_header.html.twig" %}
-{% endblock %}
-
 {% block main %}
-    <main class="py-5 container">
-        <h1>404 : Page introuvable</h1>
-    </main>
+    <div class="error-page">
+        <h1>404</h1>
+        <p>Oups ! Cette page n'existe pas.</p>
+        <a href="index.php" class="btn-primary" style="margin-top:20px; text-decoration:none;">Retour à l'accueil</a>
+    </div>
 {% endblock %}

@@ -17,3 +17,10 @@ Templates:
 
 affichage_expenses/expenses/create_group
 
+## Félix
+L'ensemble du css / plusieurs stucture(templates) / réalisation de 3 ou 4 class / 3 managers une partie du UserController.php
+
+La réalisation du logo grâce à gemini
+
+## Eliot
+Rélisation du AuthController / 
