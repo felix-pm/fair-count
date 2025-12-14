@@ -120,10 +120,9 @@ class ReimbursementManager extends AbstractManager
 
         // Tant qu'il y a des gens qui doivent de l'argent et des gens à rembourser
         while (!empty($debtors) && !empty($creditors)) {
-            // On prend le plus gros débiteur et le plus gros créancier (Algorithme Glouton)
-            // asort trie par valeur croissante (le plus petit négatif est le premier)
+            
             asort($debtors); 
-            // arsort trie par valeur décroissante (le plus grand positif est le premier)
+            
             arsort($creditors);
 
             // Récupérer les ID et Montants (premier élément des tableaux)
@@ -165,7 +164,7 @@ class ReimbursementManager extends AbstractManager
         return $transactions;
     }
 
-    // Petite fonction utilitaire pour récupérer le prénom (optionnel mais plus joli)
+    //  pour récupérer le prénom 
     private function getUserName(int $userId): string
     {
         $stmt = $this->db->prepare("SELECT firstname FROM users WHERE id = ?");
