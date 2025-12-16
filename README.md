@@ -1,4 +1,4 @@
-# FairCount 
+# FairCount : [découvrir le site](https://felixpm.alwaysdata.net/index.php?route=login)
 
 Faircount est une application web conçue pour faciliter le suivi et la répartition des dépenses au sein d'un groupe (colocation, voyage, événement). Il permet de savoir rapidement "Qui doit combien à qui".
 
