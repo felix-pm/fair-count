@@ -47,10 +47,17 @@ Il applique l'ensemble des notions vues au cours de nos 3 semaines de cours sur 
 
 ### Répartition des tâches dans le Groupe
 
-[**Eliot TOURTELIER**](https://github.com/Eliottr45): 
+[**Eliot TOURTELIER**](https://github.com/Eliottr45):  
+Réalisation de la partie remboursement du site et mise en place de la structure de base des Contrôleurs, Modèles et Vues du site
 
-[**Félix PARENDEAU MILLERIOUX**](https://github.com/felix-pm) 
+[**Félix PARENDEAU MILLERIOUX**](https://github.com/felix-pm):  
+Réalisation du css du site et mise en place de la structure de base des Contrôleurs, Modèles et Vues du site
 
-[**Pierre SOREAU**](https://github.com/PierreSoreau)
+[**Pierre SOREAU**](https://github.com/PierreSoreau):  
+Réalisation de la partie dépense et création des groupes de dépense du site
+
+### Structure de la base de données du site
+
+
 
 
