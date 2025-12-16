@@ -57,6 +57,19 @@ Réalisation du css du site et mise en place de la structure de base des Contrô
 Réalisation de la partie dépense et création des groupes de dépense du site
 
 ### Structure de la base de données du site
+<img src="assets/img/schema-bdd.webp">
+
+### Difficultés rencontrées
+
+L'une des principales difficultés rencontrées lors de la phase de développement a concerné l'optimisation de la gestion des données entre les couches Modèle (Managers) et Vue (Templates).
+
+Nous avons initialement concentré nos efforts sur la création de fonctions très génériques et "gourmandes en données" au niveau des Managers, dans le but d'être exhaustifs.
+
+Cependant, nous avons rapidement réalisé que cette approche menait à un surchargement des Modèles avec des données inutiles et des performances moins optimales.
+
+La leçon apprise a été de basculer vers une approche plus pragmatique : déterminer précisément les besoins en données directement depuis les Templates pour ensuite créer des fonctions Managers ciblées et minimales. Bien que cette réorientation ait occasionné une perte de temps initiale, elle garantit désormais une meilleure performance et une maintenabilité accrue du code.
+
+
 
 
 
